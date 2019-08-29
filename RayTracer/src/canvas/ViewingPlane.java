@@ -4,11 +4,12 @@ import org.joml.Vector2i;
 
 public class ViewingPlane {
 
-	private float w = 10;
-	private float h = 10;
-	
-	private int w_r = 10;
-	private int h_r = 10;
+	//Size in world
+	public float w = 5;
+	public float h = 5;
+	//Resolution of screen
+	public int w_r = 10;
+	public int h_r = 10;
 		
 	public ViewingPlane() {
 		
@@ -27,8 +28,5 @@ public class ViewingPlane {
 		this.h_r = h_r;
 	}
 	
-	public Vector2i getRes() {
-		return new Vector2i(w_r, h_r);
-	}
 	
 }

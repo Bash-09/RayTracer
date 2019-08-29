@@ -1,18 +1,19 @@
 package data;
 
-import java.awt.Color;
-
+import geometry.Prop;
 import rays.Ray;
 
 public class Collision {
 
-	private Object collide;
+	private Prop collide;
 	private Ray incoming;
 	private Ray outgoing;
+	private double t;
 	
-	public Collision(Object obj, Ray incRay) {
+	public Collision(Prop obj, Ray incRay, float t) {
 		this.collide = obj;
 		incoming = incRay;
+		this.t = t;
 	}
 	
 	public void setOutgoing(Ray out) {
@@ -25,12 +26,11 @@ public class Collision {
 	public Ray getOut() {
 		return outgoing;
 	}
-	public Object getObject() {
+	public Prop getObject() {
 		return collide;
 	}
-	
-	public Color getCol() {
-		return collide.col;
+	public double getDistance() {
+		return t;
 	}
 	
 }

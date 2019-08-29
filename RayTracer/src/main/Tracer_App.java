@@ -16,8 +16,10 @@ public class Tracer_App {
 		
 		window.setPreferredSize(new Dimension(600, 600));
 		frame.pack();
+		window.init();
 		frame.setVisible(true);
 		
+		window.render();
 		
 	}
 	
