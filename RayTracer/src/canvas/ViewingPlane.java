@@ -1,15 +1,16 @@
 package canvas;
 
-import org.joml.Vector2i;
-
 public class ViewingPlane {
 
 	//Size in world
-	public float w = 5;
-	public float h = 5;
+	public float w = 3;
+	public float h = 3;
 	//Resolution of screen
-	public int w_r = 10;
-	public int h_r = 10;
+	public int w_r = 600;
+	public int h_r = 600;
+	
+	public float xs = w/w_r;
+	public float ys = h/h_r;
 		
 	public ViewingPlane() {
 		
@@ -18,6 +19,9 @@ public class ViewingPlane {
 	public ViewingPlane(float w, float h) {
 		this.w = w;
 		this.h = h;
+		
+		xs = w/w_r;
+		ys = h/h_r;
 	}
 	
 	public ViewingPlane(float w, float h, int w_r, int h_r) {
@@ -26,6 +30,9 @@ public class ViewingPlane {
 		
 		this.w_r = w_r;
 		this.h_r = h_r;
+		
+		xs = w/w_r;
+		ys = h/h_r;
 	}
 	
 	

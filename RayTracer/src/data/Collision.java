@@ -10,7 +10,7 @@ public class Collision {
 	private Ray outgoing;
 	private double t;
 	
-	public Collision(Prop obj, Ray incRay, float t) {
+	public Collision(Prop obj, Ray incRay, double t) {
 		this.collide = obj;
 		incoming = incRay;
 		this.t = t;

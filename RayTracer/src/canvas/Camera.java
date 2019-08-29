@@ -1,12 +1,14 @@
 package canvas;
 
+import java.awt.image.BufferedImage;
+
 import org.joml.Vector3f;
 
 import main.Painter;
 
 public class Camera {
 
-	private ViewingPlane view;
+	private ViewingPlane view = new ViewingPlane();
 	
 	private Painter painter;
 	
@@ -21,7 +23,7 @@ public class Camera {
 		return view;
 	}
 	
-	public void repaint() {
-		painter.repaint();
+	public void repaint(BufferedImage img) {
+		painter.repaint(img);
 	}
 }
