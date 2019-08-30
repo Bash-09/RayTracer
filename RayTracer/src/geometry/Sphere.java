@@ -1,5 +1,6 @@
 package geometry;
 
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import data.Collision;
@@ -14,17 +15,18 @@ public class Sphere extends Prop{
 		this.r = r;
 	}
 	
+	@Override
 	public ShadeRec trace(Ray ray, ShadeRec record) {
 		
 		double rs = r*r;
 		//Ray origin minus sphere origin
-		Vector3f p1 = new Vector3f(ray.origin.x-pos.x, ray.origin.y-pos.y, ray.origin.z - pos.z);
+		Vector3d p1 = new Vector3d(ray.origin.x - pos.x, ray.origin.y - pos.y, ray.origin.z - pos.z);
 		//Ray direction squared
-		Vector3f va = new Vector3f(ray.direction.x*ray.direction.x, ray.direction.y*ray.direction.y, ray.direction.z*ray.direction.z);
+		Vector3d va = new Vector3d(ray.direction.x*ray.direction.x, ray.direction.y*ray.direction.y, ray.direction.z*ray.direction.z);
 		//p1 * 2 * ray direction
-		Vector3f vb = new Vector3f(p1.x*2*ray.direction.x, p1.y*2*ray.direction.y, p1.z*2*ray.direction.z);
+		Vector3d vb = new Vector3d(p1.x*2*ray.direction.x, p1.y*2*ray.direction.y, p1.z*2*ray.direction.z);
 		//p1 squared
-		Vector3f vc = new Vector3f(p1.x*p1.x, p1.y*p1.y, p1.z*p1.z);
+		Vector3d vc = new Vector3d(p1.x*p1.x, p1.y*p1.y, p1.z*p1.z);
 
 		double a = va.x + va.y + va.z;
 		double b = vb.x + vb.y + vb.z;

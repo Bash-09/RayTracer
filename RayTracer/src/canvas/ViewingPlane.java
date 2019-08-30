@@ -6,8 +6,8 @@ public class ViewingPlane {
 	public float w = 3;
 	public float h = 3;
 	//Resolution of screen
-	public int w_r = 600;
-	public int h_r = 600;
+	public int w_r = 10000;
+	public int h_r = 10000;
 	
 	public float xs = w/w_r;
 	public float ys = h/h_r;

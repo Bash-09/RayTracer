@@ -1,9 +1,9 @@
 package world;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import canvas.Camera;
@@ -11,6 +11,7 @@ import canvas.ViewingPlane;
 import data.ShadeRec;
 import entities.Light;
 import geometry.Prop;
+import geometry.Sphere;
 import rays.Ray;
 import utils.Colour;
 
@@ -21,7 +22,7 @@ public class Scene {
 	private ArrayList<Prop> objects = new ArrayList<>();
 	private ArrayList<Light> lights = new ArrayList<>();
 	
-	private Vector3f sky = new Vector3f(0.6f, 0.6f, 0.9f);
+	public Vector3f sky = new Vector3f(0.6f, 0.6f, 0.9f);
 	
 	public void addObject(Prop obj) {
 		objects.add(obj);
@@ -40,7 +41,7 @@ public class Scene {
 		
 		ViewingPlane view = camera.getView();
 		
-		boolean antiAliasing = true;
+		boolean antiAliasing = false;
 		boolean jittering = true;
 		
 		//Loop through every pixel on the view
@@ -104,7 +105,7 @@ public class Scene {
 				
 				camera.repaint(img);
 			}
-			System.gc();
+			//System.gc();
 		}
 		
 		System.gc();
@@ -112,27 +113,46 @@ public class Scene {
 		return img;
 	}
 	
-	private ShadeRec castRay(Ray ray) {
-		ShadeRec record = new ShadeRec();
+	public ShadeRec castRay(Ray ray) {
+		ShadeRec record = new ShadeRec(this);
+		return castRay(ray, record);
+	}
+	
+	public ShadeRec castRay(Ray ray, ShadeRec record) {
 		
 		for(Prop prop : objects) {
 			record = prop.trace(ray, record);
 		}
 		
-		//record = objects.get(0).trace(new Ray(0, 0, 0, 0, 0, 1), record);
-		
-		
 		return record;
 	}
 	
 	private Ray getRay(ViewingPlane view, int i, int j) {
-		//Static viewPlane, can only move camera, not turn
-		float x = camera.pos.x - view.w/2 + i*view.xs + view.xs/2;
-		float y = camera.pos.y - view.h/2 + j*view.ys + view.ys/2;
-		float z = camera.pos.z;
-		
-		return new Ray(x, y, z, 0, 0, 1);
+		return camera.getRay(i, j);
 	}
+	
+	public boolean sampleLights(Vector3d point) {
+		ShadeRec record = new ShadeRec(this);
+		
+		for(int i = 0; i < lights.size(); i++) {
+			Sphere light = (Sphere)lights.get(i);
+			Ray ray = new Ray(point.x, point.y, point.z, light.pos.x-point.x, light.pos.y-point.y, light.pos.z-point.z);
+			ray.normalize();
+			light.trace(ray, record);
+			castRay(ray, record);
+			
+			if(record.nearest() != null) {
+				if(record.nearest().getObject() == light) {
+					record = null;
+					ray = null;
+					return true;
+				}
+			}
+		}
+ 		
+		return false;
+	}
+	
 	
 	private Ray getJitteredRay(ViewingPlane view, int i, int j) {		
 		//Static viewPlane, can only move camera, not turn

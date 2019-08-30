@@ -1,59 +1,106 @@
 package data;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
+import geometry.Prop;
 import rays.Ray;
-import utils.Colour;
+import world.Scene;
 
 public class ShadeRec {
 
 	private ArrayList<Collision> collisions = new ArrayList<>();
 	
+	private boolean collided = false;
+	Scene scene;
+	
+	public ShadeRec(Scene scene) {
+		this.scene = scene;
+	}
+	
+	public Prop getObject() {
+		return nearest().getObject();
+	}
+	
 	public Vector3f getColour() {
-		if(collisions.size() == 0) {
-			return null;
+		Collision closest = nearest();
+		
+		if(closest == null) {
+			return scene.sky;
 		}
+		Vector3f col = closest.getObject().col;
 		
 		
-		double closestDist;
-		int closestInd = 0;
-		
-		closestDist = collisions.get(0).getDistance();
-
-		for(int i = 0; i < collisions.size(); i++) {
-			double temp = collisions.get(i).getDistance();
-			
-			if(temp < closestDist && temp > 0) {
-				closestDist = temp;
-				closestInd = i;
-			}
+		if(hasLight(closest)) {
+			return col;
+		} else {
+			return new Vector3f(0.1f, 0.1f, 0.1f);
 		}
+		//Vector3f lightCol = getLightValue(closest);
 		
-		if(closestDist < 0) {
-			return null;
-		}
+		//col = Colour.mixColour(col.x, col.y, col.z, lightCol.length(),lightCol.x, lightCol.y, lightCol.z);
+		
+		//return col;
+		
+		
 		
 		/*
-		Collision closest = collisions.get(closestInd);
 		Vector3f col = new Vector3f();
 		Ray ray = closest.getInc();
 		col.z = (float)Math.cos(ray.origin.z+ray.direction.z*closest.getDistance()*10);
 		col.x = (float)Math.sin(ray.origin.x+ray.direction.x*closest.getDistance()*10);
 		col.y = (float)Math.sin(ray.origin.z+ray.direction.z*closest.getDistance()*10);
-
+		
 
 		col = Colour.col(col);
-		return new Color(col.x, col.y, col.z);
+		return col;
 		*/
 		
-		return collisions.get(closestInd).getObject().col;
 	}
 	
-	public void addCollision(Collision col) {
-		collisions.add(col);
+	public Collision nearest() {
+		if(collisions.size() == 0) {
+			return null;
+		}
+		
+		
+		double closestDist = -1;
+		int closestInd = -1;
+		
+		for(int i = 0; i < collisions.size(); i++) {
+			double temp = collisions.get(i).getDistance();
+			
+			if((closestDist < 0 || temp < closestDist) && temp > 0) {
+				closestDist = temp;
+				closestInd = i;
+			}
+		}
+		
+		if(closestInd < 0) {
+			return null;
+		}
+		
+		return collisions.get(closestInd);
+	}
+	
+	private boolean hasLight(Collision collision) {
+		Ray inc = collision.getInc();
+		Vector3d pos = new Vector3d(inc.origin);
+		Vector3d dir = new Vector3d(inc.direction);
+		dir.mul((collision.getDistance()*0.999));
+		pos.add(dir);
+		
+		return scene.sampleLights(pos);
+	}
+	
+	public void addCollision(Collision collision) {
+		collisions.add(collision);
+	}
+	
+	public boolean collided() {
+		return collided;
 	}
 	
 }

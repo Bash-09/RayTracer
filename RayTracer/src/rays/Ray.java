@@ -1,25 +1,36 @@
 package rays;
 
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 public class Ray {
 
 	public Ray() {}
-	public Ray(float x, float y, float z, float dx, float dy, float dz) {
-		origin = new Vector3f(x, y, z);
-		direction = new Vector3f(dx, dy, dz);
+	public Ray(double x, double y, double z, double dx, double dy, double dz) {
+		origin = new Vector3d(x, y, z);
+		direction = new Vector3d(dx, dy, dz);
 	}
 	
-	public Vector3f origin = new Vector3f(0, 0, 0);
-	public Vector3f direction = new Vector3f(0, 0, 1);
+	public Vector3d origin = new Vector3d(0, 0, 0);
+	public Vector3d direction = new Vector3d(0, 0, 1);
 	
 	public void normalize() {
-		float dist = (float)Math.sqrt(direction.x*direction.x + direction.y*direction.y + direction.z*direction.z);
-		direction.x /= dist;
-		direction.y /= dist;
-		direction.z /= dist;
+		direction.normalize();
 	}
 	
+	public void reflect(Vector3f normal) {
+		double dot = direction.x*normal.x + direction.y*normal.y + direction.z*normal.z;
+		double square = normal.x*normal.x + normal.y*normal.y + normal.z*normal.z;
+		
+		direction.x = dot*normal.x/square;
+		direction.y = dot*normal.y/square;
+		direction.z = dot*normal.z/square;
+	}
+	
+	public void move(double t) {
+		origin.add(direction.x*t, direction.y*t, direction.z*t);
+		
+	}
 	
 	
 }
