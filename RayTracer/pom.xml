@@ -22,5 +22,10 @@
   		<artifactId>joml</artifactId>
   		<version>1.9.17</version>
   	</dependency>
+  	<dependency>
+  		<groupId>io.humble</groupId>
+  		<artifactId>humble-video-all</artifactId>
+  		<version>0.3.0</version>
+  	</dependency>
   </dependencies>
 </project>

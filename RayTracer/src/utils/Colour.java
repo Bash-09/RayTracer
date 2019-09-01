@@ -13,6 +13,7 @@ public class Colour {
 		return col(r, g, b);
 	}
 	
+	
 	public static Vector3f mixColour(float r, float g, float b, float scale, float r2, float g2, float b2) {
 		float or = r;
 		float og = g;
@@ -29,6 +30,7 @@ public class Colour {
 		
 		return col(or, og, ob);
 	}
+	
 	
 	public static Vector3f col(float r, float g, float b) {
 		return new Vector3f(Math.max(0, Math.min(1, r)), Math.max(0, Math.min(1, g)), Math.max(0, Math.min(1, b)));

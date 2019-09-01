@@ -3,11 +3,11 @@ package canvas;
 public class ViewingPlane {
 
 	//Size in world
-	public float w = 3;
-	public float h = 3;
+	public float w = 16f;
+	public float h = 9f;
 	//Resolution of screen
-	public int w_r = 10000;
-	public int h_r = 10000;
+	public int w_r = 1920;
+	public int h_r = 1080;
 	
 	public float xs = w/w_r;
 	public float ys = h/h_r;

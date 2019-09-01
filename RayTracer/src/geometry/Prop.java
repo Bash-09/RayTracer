@@ -1,7 +1,6 @@
 package geometry;
 
-import java.awt.Color;
-
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import data.ShadeRec;
@@ -10,6 +9,8 @@ import utils.Colour;
 
 public abstract class Prop {
 
+	public boolean mirror = false;
+	
 	public Vector3f pos = new Vector3f(0, 0, 0);
 	
 	public Vector3f col = new Vector3f(0.5f, 0.5f, 0.5f);
@@ -21,10 +22,11 @@ public abstract class Prop {
 		this.col = Colour.col(col);
 	}
 	
-	public Color getCol() {
-		return new Color(col.x, col.y, col.z);
+	public Vector3f getCol() {
+		return new Vector3f(col.x, col.y, col.z);
 	}
 	
 	public abstract ShadeRec trace(Ray ray, ShadeRec record);
+	public abstract Vector3d getNormal(Vector3d point);
 	
 }

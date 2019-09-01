@@ -1,12 +1,15 @@
 package geometry;
 
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+
 import data.Collision;
 import data.ShadeRec;
 import rays.Ray;
 
 public class Plane extends Prop{
 
-	public float offset = 0;
+	public float offset = 1;
 
 	@Override
 	public ShadeRec trace(Ray ray, ShadeRec record) {
@@ -27,6 +30,17 @@ public class Plane extends Prop{
 		}
 		
 		return record;
+	}
+	
+	@Override
+	public Vector3d getNormal(Vector3d point) {
+		Vector3d normal = new Vector3d();
+		
+		normal.x = -pos.x;
+		normal.y = -pos.y;
+		normal.z = -pos.z;
+		
+		return normal;
 	}
 	
 }

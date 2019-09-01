@@ -86,13 +86,12 @@ public class ShadeRec {
 	}
 	
 	private boolean hasLight(Collision collision) {
-		Ray inc = collision.getInc();
-		Vector3d pos = new Vector3d(inc.origin);
-		Vector3d dir = new Vector3d(inc.direction);
-		dir.mul((collision.getDistance()*0.999));
-		pos.add(dir);
+		Ray in = collision.getInc();
+		Ray out = new Ray(in);
 		
-		return scene.sampleLights(pos);
+		out.move(collision.getDistance());
+		
+		return scene.sampleLights(out.origin);
 	}
 	
 	public void addCollision(Collision collision) {

@@ -44,4 +44,15 @@ public class Sphere extends Prop{
 		return record;
 	}
 
+	public Vector3d getNormal(Vector3d point) {
+		Vector3d normal = new Vector3d();
+		
+		normal.x = point.x - pos.x;
+		normal.y = point.y - pos.y;
+		normal.z = point.z - pos.z;
+		normal.normalize();
+		
+		return normal;
+	}
+	
 }

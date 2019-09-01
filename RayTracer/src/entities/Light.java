@@ -9,7 +9,7 @@ public class Light extends Sphere{
 	public Vector3f col = new Vector3f(1, 1, 1);
 
 	public Light() {
-		super(0.1f);
+		super(1f);
 	}
 	
 }

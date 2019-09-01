@@ -1,5 +1,7 @@
 package data;
 
+import org.joml.Vector3d;
+
 import geometry.Prop;
 import rays.Ray;
 
@@ -31,6 +33,13 @@ public class Collision {
 	}
 	public double getDistance() {
 		return t;
+	}
+	
+	public Vector3d getPoint() {
+		Vector3d point = new Vector3d(incoming.direction);
+		point.mul(t*0.999);
+		point.add(incoming.origin);
+		return point;
 	}
 	
 }
