@@ -11,8 +11,9 @@ import javax.swing.JPanel;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
-import canvas.Painter;
-import canvas.PinHoleCamera;
+import camera.Lens;
+import camera.Painter;
+import camera.PinHoleCamera;
 import data.Sampler;
 import entities.Light;
 import geometry.Plane;
@@ -27,6 +28,7 @@ public class Window extends JPanel {
 	Scene scene;
 	
 	PinHoleCamera cam = new PinHoleCamera(60);
+	Lens lens = new Lens(0);
 	
 	Sphere sphere = new Sphere(1);
 	Sphere sphere2 = new Sphere(0.5f);
@@ -44,6 +46,7 @@ public class Window extends JPanel {
 	
 	public void init() {
 		scene = new Scene(cam);
+		cam.setLens(lens);
 		
 		sphere.setColour(0, 0.3f, 0);
 		sphere2.setColour(0.5f, 0.5f, 1);
@@ -127,16 +130,9 @@ public class Window extends JPanel {
 		
 	}
 	
-	float t = 0;
 	private void animate() {
 		
-		sphere.pos.x = (float)Math.sin(t);
-		t += 0.02f;
-		if(t > Math.PI*2) {
-			t = 0;
-		}
-		
-		cam.pos.y += 0.005f;
+		lens.focalLength += 0.04f;
 		
 	}
 

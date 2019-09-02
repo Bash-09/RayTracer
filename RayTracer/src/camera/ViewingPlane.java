@@ -1,4 +1,4 @@
-package canvas;
+package camera;
 
 public class ViewingPlane {
 
@@ -6,8 +6,8 @@ public class ViewingPlane {
 	public float w = 16f;
 	public float h = 9f;
 	//Resolution of screen
-	public int w_r = 1920;
-	public int h_r = 1080;
+	public int w_r = 1280;
+	public int h_r = 720;
 	
 	public float xs = w/w_r;
 	public float ys = h/h_r;

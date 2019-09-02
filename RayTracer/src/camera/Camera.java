@@ -1,4 +1,4 @@
-package canvas;
+package camera;
 
 import java.awt.image.BufferedImage;
 

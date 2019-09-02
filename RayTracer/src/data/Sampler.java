@@ -52,7 +52,7 @@ public class Sampler {
 	private Color sampleJitter(int i, int j) {
 		Vector3f outCol = new Vector3f();
 		
-		int samples = 50;
+		int samples = 256;
 		
 		for(int k = 0; k < samples; k++) {
 			double x = i + Math.random();

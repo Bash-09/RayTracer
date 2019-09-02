@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
-import canvas.Camera;
+import camera.Camera;
 import data.Sampler;
 import data.ShadeRec;
 import entities.Light;

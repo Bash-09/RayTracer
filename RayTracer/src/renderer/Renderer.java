@@ -7,8 +7,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import canvas.Camera;
-import canvas.ViewingPlane;
+import camera.Camera;
+import camera.ViewingPlane;
 import data.Sampler;
 import world.Scene;
 

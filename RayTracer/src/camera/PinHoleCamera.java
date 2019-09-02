@@ -1,4 +1,4 @@
-package canvas;
+package camera;
 
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -13,13 +13,20 @@ public class PinHoleCamera extends Camera{
 	private Vector3d viewX;
 	private Vector3d viewZ = new Vector3d(0, 0, 1); //Also the direction vector of the camera
 	private Vector3d viewY;
+	
+	private Lens lens = null;
 
 	public PinHoleCamera(double fov) {	
 		this.fov = fov;
 		init();
 	}
 	
+	public void setLens(Lens lens) {
+		this.lens = lens;
+	}
+	
 	private void init() {
+		viewZ.normalize();
 		double angleB = (180 - fov)/2;
 		double lengthB = (view.w*Math.sin(Math.toRadians(angleB)))/Math.sin(Math.toRadians(fov));
 		distance = Math.sqrt(lengthB*lengthB - (view.w/2)*(view.w/2));
@@ -74,6 +81,11 @@ public class PinHoleCamera extends Camera{
 		dir.normalize();
 		
 		ray.direction = dir;
+		
+		if(lens != null) {
+			ray = lens.getRay(ray, viewX, viewY, viewZ);
+		}
+		
 		return ray;
 	}
 	
@@ -86,5 +98,8 @@ public class PinHoleCamera extends Camera{
 	public void setDirection(Vector3d in) {
 		setDirection(in.x, in.y, in.z);
 	}
+	
+	
+	
 	
 }

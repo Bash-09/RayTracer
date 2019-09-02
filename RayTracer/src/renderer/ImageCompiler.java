@@ -3,7 +3,7 @@ package renderer;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
 
-import canvas.Painter;
+import camera.Painter;
 
 public class ImageCompiler implements Runnable{
 
