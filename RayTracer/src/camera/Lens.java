@@ -8,7 +8,7 @@ import rays.Ray;
 public class Lens {
 
 	public float focalLength;
-	public float radius = 1f;
+	public float radius = 0.05f;
 	
 	public Lens(float focalLength) {
 		this.focalLength = focalLength;

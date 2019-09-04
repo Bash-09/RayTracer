@@ -3,11 +3,11 @@ package camera;
 public class ViewingPlane {
 
 	//Size in world
-	public float w = 16f;
-	public float h = 9f;
+	public float w = 1f;
+	public float h = 1f;
 	//Resolution of screen
-	public int w_r = 1280;
-	public int h_r = 720;
+	public int w_r = 600;
+	public int h_r = 600;
 	
 	public float xs = w/w_r;
 	public float ys = h/h_r;

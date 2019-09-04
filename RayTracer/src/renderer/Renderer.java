@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import camera.Camera;
 import camera.ViewingPlane;
-import data.Sampler;
+import data.Shader;
 import world.Scene;
 
 public class Renderer implements Runnable{
@@ -17,7 +17,7 @@ public class Renderer implements Runnable{
 	Thread[] threads;
 	
 	private BufferedImage img;
-	private Sampler sampler;
+	private Shader sampler;
 	
 	private Scene scene;
 	private Camera cam;
@@ -30,7 +30,7 @@ public class Renderer implements Runnable{
 	
 	private ImageCompiler compiler;
 	
-	public Renderer(Sampler sampler) {
+	public Renderer(Shader sampler) {
 		this.sampler = sampler;
 	}
 

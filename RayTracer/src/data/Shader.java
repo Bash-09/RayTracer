@@ -8,7 +8,7 @@ import rays.Ray;
 import utils.Colour;
 import world.Scene;
 
-public class Sampler {
+public class Shader {
 
 	//Sampler types
 	public enum sample{
@@ -52,7 +52,7 @@ public class Sampler {
 	private Color sampleJitter(int i, int j) {
 		Vector3f outCol = new Vector3f();
 		
-		int samples = 256;
+		int samples = 50;
 		
 		for(int k = 0; k < samples; k++) {
 			double x = i + Math.random();

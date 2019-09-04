@@ -1,4 +1,4 @@
-package entities;
+package lights;
 
 import org.joml.Vector3f;
 

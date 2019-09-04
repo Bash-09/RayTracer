@@ -25,8 +25,8 @@ public class Tracer_App {
 		window.init();
 		
 		
-		//window.render();
-		window.exportFrames("FocalChange");
+		window.render();
+		//window.exportFrames("FocalChange2");
 		
 	}
 	

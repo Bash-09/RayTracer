@@ -6,11 +6,11 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import camera.Camera;
-import data.Sampler;
+import data.Shader;
 import data.ShadeRec;
-import entities.Light;
 import geometry.Prop;
 import geometry.Sphere;
+import lights.Light;
 import rays.Ray;
 
 public class Scene {
