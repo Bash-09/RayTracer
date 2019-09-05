@@ -34,7 +34,9 @@ public class Sampler {
 	}
 	
 	
-	public static Vector3d[] sampleHemisphere(Vector2d[] samples) {
+	public static Vector3d[] sampleHemisphere(int sampleNum, float e) {
+		
+		Vector2d[] samples = sampleUnitSquare(sampleNum);
 		
 		int numSamp = samples.length;
 		
@@ -42,29 +44,18 @@ public class Sampler {
 		
 		for(int i = 0; i < numSamp; i++) {
 			
+			double cos_phi = Math.cos(2.0 * Math.PI * samples[i].x);
+			double sin_phi = Math.sin(2.0 * Math.PI * samples[i].x);
+			double cos_theta = Math.pow((1.0 - samples[i].y), 1.0 / (e + 1.0));
+			double sin_theta = Math.sqrt (1.0 - cos_theta * cos_theta);
+			double pu = sin_theta * cos_phi;
+			double pv = sin_theta * sin_phi;
+			double pw = cos_theta;
 			
-			
+			outSamps[i] = new Vector3d(pu, pv, pw);
 		}
 		return outSamps;
 	}
-	
-	/*
-	void
-	Sampler::map_samples_to_hemisphere(const float e) {
-		int size = samples.size();
-		hemisphere_samples.reserve(num_samples * num_sets);
-		for (int j= 0; j < size; j++) {
-			float cos_phi = cos(2.0 * PI * samples[j].x);
-			float sin_phi = sin(2.0 * PI * samples[j].x);
-			float cos_theta = pow((1.0 - samples[j].y), 1.0 / (e + 1.0));
-			float sin_theta = sqrt (1.0 - cos_theta * cos_theta);
-			float pu = sin_theta * cos_phi;
-			float pv = sin_theta * sin_phi;
-			float pw = cos_theta;
-		}
-	}
-	hemisphere_samples.push_back(Point3D(pu, pv, pw));
-*/
 	
 	
 }

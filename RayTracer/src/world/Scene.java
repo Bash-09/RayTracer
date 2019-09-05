@@ -58,29 +58,8 @@ public class Scene {
 	}
 	
 	
-	
-	////****************************SOON TO BE DEPRECATED
-	
-	public boolean sampleLights(Vector3d point) {
-		ShadeRec record = new ShadeRec(this);
-		
-		for(int i = 0; i < lights.size(); i++) {
-			Sphere light = (Sphere)lights.get(i);
-			Ray ray = new Ray(point.x, point.y, point.z, light.pos.x-point.x, light.pos.y-point.y, light.pos.z-point.z);
-			ray.normalize();
-			light.trace(ray, record);
-			castRay(ray, record);
-			
-			if(record.nearest() != null) {
-				if(record.nearest().getObject() == light) {
-					record = null;
-					ray = null;
-					return true;
-				}
-			}
-		}
- 		
-		return false;
+	public ArrayList<Light> getLights() {
+		return lights;
 	}
 
 	
