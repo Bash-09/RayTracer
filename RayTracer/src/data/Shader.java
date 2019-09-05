@@ -54,12 +54,14 @@ public class Shader {
 		
 		int samples = 50;
 		
+		
 		for(int k = 0; k < samples; k++) {
 			double x = i + Math.random();
 			double y = j + Math.random();
 			
 			outCol.add(samplePoint(x, y));
 		}
+		
 		
 		outCol.div(samples);
 		
@@ -119,6 +121,7 @@ public class Shader {
 			return Colour.mixColour(colour.x,colour.y,colour.z, 0.2f, reflection.x, reflection.y, reflection.z);
 			
 		} else {
+			
 			
 			//Check for shadows
 			if(!scene.sampleLights(col.getPoint())) {
