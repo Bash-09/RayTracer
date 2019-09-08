@@ -56,7 +56,7 @@ public class Shader {
 	private Color sampleJitter(int i, int j) {
 		Vector3f outCol = new Vector3f();
 		
-		int samples = 1;
+		int samples = 100;
 		
 		lights = scene.getLights();
 		Sample sample = new Sample(samples);
