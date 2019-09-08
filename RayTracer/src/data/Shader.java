@@ -56,7 +56,7 @@ public class Shader {
 	private Color sampleJitter(int i, int j) {
 		Vector3f outCol = new Vector3f();
 		
-		int samples = 25;
+		int samples = 1;
 		
 		lights = scene.getLights();
 		Sample sample = new Sample(samples);
@@ -107,9 +107,9 @@ public class Shader {
 		
 		//check if there was a collision
 		Collision collision = record.nearest();
+		
 		if(collision == null) {
 			Vector3f out = new Vector3f(scene.sky);
-			out.add(sampleLensFlare(ray));
 			return out;
 		}
 		
@@ -118,7 +118,6 @@ public class Shader {
 		
 		return outCol;
 	}
-	
 	
 	
 	private int maxRecursions = 5;
@@ -133,7 +132,8 @@ public class Shader {
 			depth++;
 			
 			Vector3f reflection = sampleRay(newRay, depth, sample);
-			Vector3f colour = col.getObject().mat.col;
+			
+			Vector3f colour = sampleLight(col, sample);
 			
 			return Colour.mixColour(colour.x,colour.y,colour.z, 1-col.getObject().mat.reflectiveFactor, reflection.x, reflection.y, reflection.z);
 			

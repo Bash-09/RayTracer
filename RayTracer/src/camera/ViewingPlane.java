@@ -35,5 +35,4 @@ public class ViewingPlane {
 		ys = h/h_r;
 	}
 	
-	
 }
