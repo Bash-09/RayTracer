@@ -11,13 +11,12 @@ import javax.swing.JPanel;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
-import camera.Lens;
 import camera.Painter;
 import camera.PinHoleCamera;
 import data.Shader;
 import geometry.Plane;
 import geometry.Sphere;
-import lights.Light;
+import lights.PointLight;
 import renderer.Renderer;
 import world.Scene;
 
@@ -30,68 +29,51 @@ public class Window extends JPanel {
 	PinHoleCamera cam = new PinHoleCamera(60);
 	//Lens lens = new Lens(6);
 	
-	Sphere sphere = new Sphere(1);
-	Sphere sphere2 = new Sphere(0.5f);
-	Plane plane = new Plane();
-	Light light = new Light();
-	
-	Sphere sphere3 = new Sphere(1);
-	Sphere sphere4 = new Sphere(1);
-	
-	Plane mirror = new Plane();
+	//DirectionalLight light = new DirectionalLight();
+	PointLight light = new PointLight();
 	
 	Shader sampler = new Shader();
 	Renderer rend = new Renderer(sampler);
+	
+	Plane ground = new Plane();
+
+	
+	Sphere[] spheres = new Sphere[16];
 	
 	
 	public void init() {
 		scene = new Scene(cam);
 		//cam.setLens(lens);
 		
-		sphere.setColour(0, 0.3f, 0);
-		sphere2.setColour(0.5f, 0.5f, 1);
-		
-		sphere3.setColour(1, 1, 1);
-		sphere4.setColour(1, 1, 1);
-		
-		plane.setColour(0.9f, 0.5f, 0.2f);
-		
-		plane.pos = new Vector3f(0, 1, 0);
-		plane.offset = 2f;
-		
-		
 		cam.setPaint(painter);
-		cam.pos = new Vector3f(0, 5, -1);
-		cam.setDirection(new Vector3d(0, -0.5f, 1));
-		
-		sphere.pos = new Vector3f(0, 2, 5);
-		sphere2.pos = new Vector3f(-0.7f, 2f, 3);
-		
-		sphere3.pos = new Vector3f(-4, 1, 10);
-		sphere4.pos = new Vector3f(4, 1, 7);
-		scene.addObject(sphere3);
-		scene.addObject(sphere4);
-		
-		//sphere.mirror = true;
-		//sphere2.mirror = true;
-		//sphere3.mirror = true;
-		//sphere4.mirror = true;
+		scene.setCamera(cam);
+		cam.pos = new Vector3f(25, 20, -25);
+		cam.setDirection(new Vector3d(-0.35f, -0.6f, 1));
 
-		scene.addObject(sphere);
-		scene.addObject(plane);
-		scene.addObject(sphere2);
-		scene.addObject(mirror);
-		
-		light.pos = new Vector3f(0, 10, 5);
-		
 		scene.addLight(light);
 		
-		scene.setCamera(cam);
 		
-		mirror.setColour(new Vector3f(1, 1, 1));
-		mirror.pos = new Vector3f(0.6f, 0, 1);
-		mirror.mirror = true;
-		mirror.offset = -10;
+		scene.addObject(ground);
+		
+		
+		light.dir = new Vector3f(16, 10, 16);
+		
+		ground.pos = new Vector3f(0, 1, 0);
+		ground.offset = 1;
+		ground.mat.col = new Vector3f(0.5f, 0.2f, 0.2f);
+		ground.mat.reflection = true;
+		
+		
+		for(int i = 0; i < spheres.length; i++) {
+			
+			spheres[i] = new Sphere(2.5f);
+			spheres[i].pos = new Vector3f(i/4*8, 1, (i%4)*8);
+			//spheres[i].mat.reflection = true;
+			spheres[i].mat.col = new Vector3f(0.2f, 0.7f, 0.5f);
+			
+			scene.addObject(spheres[i]);
+		}
+		
 	}
 	
 	

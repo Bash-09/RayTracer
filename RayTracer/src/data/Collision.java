@@ -16,6 +16,7 @@ public class Collision {
 		this.collide = obj;
 		incoming = incRay;
 		this.t = t;
+		calcOut();
 	}
 	
 	public void setOutgoing(Ray out) {
@@ -37,9 +38,21 @@ public class Collision {
 	
 	public Vector3d getPoint() {
 		Vector3d point = new Vector3d(incoming.direction);
-		point.mul(t*0.999);
+		point.mul(t*0.9999);
 		point.add(incoming.origin);
 		return point;
+	}
+	
+	private void calcOut() {
+		Vector3d normal = getObject().getNormal(getPoint());
+		outgoing = new Ray(incoming);
+		outgoing.reflect(normal);
+		outgoing.origin = new Vector3d(getPoint());
+	}
+	
+	public Vector3d getNormal() {
+		Vector3d normal = collide.getNormal(getPoint());
+		return normal;
 	}
 	
 }

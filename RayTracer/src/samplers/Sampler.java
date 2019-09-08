@@ -33,7 +33,7 @@ public class Sampler {
 		return samples;
 	}
 	
-	
+	/*
 	public static Vector3d[] sampleHemisphere(int sampleNum, float e) {
 		
 		Vector2d[] samples = sampleUnitSquare(sampleNum);
@@ -56,6 +56,34 @@ public class Sampler {
 		}
 		return outSamps;
 	}
+	*/
 	
+	public static Vector3d sampleHemisphere(int sampleSize, int index, float e) {
+		
+		//Get 2D sample on square
+		int sqrt = (int)Math.sqrt(sampleSize);
+		double scale = 1/(double)sqrt;
+
+		Vector2d sample;
+
+		double x = scale * (index/sqrt) + scale/2;
+		double y = scale * (index%sqrt) + scale/2;
+		x += Math.random();
+		y += Math.random();
+		sample = new Vector2d(x, y);
+		
+		//Map 2d location to place on sphere
+		double cos_phi = Math.cos(2.0 * Math.PI * sample.x);
+		double sin_phi = Math.sin(2.0 * Math.PI * sample.x);
+		double cos_theta = Math.pow((1.0 - sample.y), 1.0 / (e + 1.0));
+		double sin_theta = Math.sqrt (1.0 - cos_theta * cos_theta);
+		double pu = sin_theta * cos_phi;
+		double pv = sin_theta * sin_phi;
+		double pw = cos_theta;
+		
+		//return new Vector3d(pu, pv, pw);
+		return new Vector3d(cos_phi, sin_phi, 0);
+		
+	}
 	
 }

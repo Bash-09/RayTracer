@@ -31,6 +31,10 @@ public class Colour {
 		return col(or, og, ob);
 	}
 	
+	public static Vector3f mixColour(Vector3f a, float scale, Vector3f b) {
+		return mixColour(a.x, a.y, a.z, scale, b.x, b.y, b.z);
+	}
+	
 	
 	public static Vector3f col(float r, float g, float b) {
 		return new Vector3f(Math.max(0, Math.min(1, r)), Math.max(0, Math.min(1, g)), Math.max(0, Math.min(1, b)));
@@ -44,5 +48,11 @@ public class Colour {
 		return new Color(col.x, col.y, col.z);
 	}
 	
+	public static Vector3f combine(Vector3f in, Vector3f in2) {
+		return new Vector3f(in.x*in2.x, in.y*in2.y, in.z*in2.z);
+	}
+	public static Vector3f combine(float r1, float g1, float b1, float r2, float b2, float g2) {
+		return combine(new Vector3f(r1, g1, b1), new Vector3f(r2, b2, g2));
+	}
 	
 }

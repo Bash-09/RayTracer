@@ -1,0 +1,23 @@
+package lights;
+
+import org.joml.Vector3d;
+
+import rays.Ray;
+import samplers.Sample;
+
+public class PointLight extends Light{
+
+	@Override
+	public Ray getLightSampleRay(Sample samp, Vector3d point) {
+		Vector3d dif = new Vector3d(dir.x - point.x, dir.y - point.y, dir.z - point.z);
+		Ray out = new Ray(point.x, point.y, point.z, dif.x, dif.y, dif.z);
+		
+		out.t = dif.length();
+		out.hasLength = true;
+		
+		return out;
+	}
+
+	
+	
+}

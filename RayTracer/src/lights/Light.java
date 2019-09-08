@@ -1,20 +1,19 @@
 package lights;
 
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import geometry.Sphere;
+import rays.Ray;
+import samplers.Sample;
 
-public class Light extends Sphere{
+public abstract class Light {
 
-	public LightType type = LightType.point;
-	
+	public Vector3f dir = new Vector3f(0, -1, 0);
 	public Vector3f col = new Vector3f(1, 1, 1);
-
-	public Light() {
-		super(1f);
-	}
-	public Light(float rad) {
-		super(rad);
-	}
+	
+	public abstract Ray getLightSampleRay(Sample samp, Vector3d point);
+	
+	public boolean visible = true;
 	
 }

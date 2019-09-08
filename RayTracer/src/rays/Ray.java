@@ -7,6 +7,9 @@ public class Ray {
 
 	public Ray() {}
 	
+	public double t;
+	public boolean hasLength = false;
+	
 	public Ray(double x, double y, double z, double dx, double dy, double dz) {
 		init(x, y, z, dx, dy, dz);
 	}
@@ -17,6 +20,7 @@ public class Ray {
 	private void init(double x, double y, double z, double dx, double dy, double dz) {
 		origin = new Vector3d(x, y, z);
 		direction = new Vector3d(dx, dy, dz);
+		direction.normalize();
 	}
 	
 	public Vector3d origin = new Vector3d(0, 0, 0);

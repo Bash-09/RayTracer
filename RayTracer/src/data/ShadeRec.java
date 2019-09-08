@@ -30,14 +30,9 @@ public class ShadeRec {
 		if(closest == null) {
 			return scene.sky;
 		}
-		Vector3f col = closest.getObject().col;
+		Vector3f col = closest.getObject().mat.col;
 		
-		
-		if(hasLight(closest)) {
-			return col;
-		} else {
-			return new Vector3f(0.1f, 0.1f, 0.1f);
-		}
+		return col;
 		//Vector3f lightCol = getLightValue(closest);
 		
 		//col = Colour.mixColour(col.x, col.y, col.z, lightCol.length(),lightCol.x, lightCol.y, lightCol.z);
@@ -83,15 +78,6 @@ public class ShadeRec {
 		}
 		
 		return collisions.get(closestInd);
-	}
-	
-	private boolean hasLight(Collision collision) {
-		Ray in = collision.getInc();
-		Ray out = new Ray(in);
-		
-		out.move(collision.getDistance());
-		
-		return scene.sampleLights(out.origin);
 	}
 	
 	public void addCollision(Collision collision) {

@@ -9,7 +9,7 @@ import rays.Ray;
 
 public class Sphere extends Prop{
 	
-	float r;
+	protected float r;
 	
 	public Sphere(float r) {
 		this.r = r;

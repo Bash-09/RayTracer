@@ -57,7 +57,6 @@ public class Scene {
 		return record;
 	}
 	
-	
 	public ArrayList<Light> getLights() {
 		return lights;
 	}
