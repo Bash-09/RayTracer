@@ -14,8 +14,10 @@ public abstract class Light {
 	
 	public abstract Ray getLightSampleRay(Sample samp, Vector3d point);
 	
-	public boolean visible = false;
+	public boolean visible = true;
 	
 	public abstract Vector3f getCol(Ray toLight);
+	
+	public float intensity = 2f;
 	
 }

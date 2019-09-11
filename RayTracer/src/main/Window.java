@@ -40,9 +40,7 @@ public class Window extends JPanel {
 	
 	Plane ground = new Plane();
 
-	
 	Sphere[] spheres = new Sphere[16];
-	
 	
 	public void init() {
 		scene = new Scene(cam);
@@ -53,8 +51,8 @@ public class Window extends JPanel {
 		cam.pos = new Vector3f(25, 20, -25);
 		cam.setDirection(new Vector3d(-0.35f, -0.6f, 1));
 
-		//scene.addLight(light);
-		scene.addLight(lightD);
+		scene.addLight(light);
+		//scene.addLight(lightD);
 		//scene.addLight(lightD2);
 		
 		
@@ -62,7 +60,7 @@ public class Window extends JPanel {
 		
 		
 		light.dir = new Vector3f(16, 10, 16);
-		lightD.dir = new Vector3f(1, -1, 1);
+		lightD.dir = new Vector3f(0, -1, 0);
 		lightD2.dir = new Vector3f(-1, -1, -1);
 		
 		ground.pos = new Vector3f(0, 1, 0);

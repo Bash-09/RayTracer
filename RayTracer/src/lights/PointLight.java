@@ -8,8 +8,6 @@ import samplers.Sample;
 
 public class PointLight extends Light{
 
-	public double intensity = 500f;
-	
 	@Override
 	public Ray getLightSampleRay(Sample samp, Vector3d point) {
 		Vector3d dif = new Vector3d(dir.x - point.x, dir.y - point.y, dir.z - point.z);
@@ -24,7 +22,7 @@ public class PointLight extends Light{
 	@Override
 	public Vector3f getCol(Ray toLight) {
 		
-		double falloff = intensity / (4*Math.PI*toLight.t);
+		double falloff = 250 * intensity / (4*Math.PI*toLight.t);
 		
 		Vector3f outCol = new Vector3f(col);
 		outCol.mul((float)falloff);
