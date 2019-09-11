@@ -11,12 +11,12 @@ import javax.swing.JPanel;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
-import camera.Lens;
 import camera.Painter;
 import camera.PinHoleCamera;
 import data.Shader;
 import geometry.Plane;
 import geometry.Sphere;
+import lights.DirectionalLight;
 import lights.PointLight;
 import renderer.Renderer;
 import world.Scene;
@@ -28,11 +28,13 @@ public class Window extends JPanel {
 	Scene scene;
 	
 	PinHoleCamera cam = new PinHoleCamera(60);
-	Lens lens = new Lens(11);
+	//Lens lens = new Lens(11);
 	
 	//DirectionalLight light = new DirectionalLight();
 	PointLight light = new PointLight();
-	
+	DirectionalLight lightD = new DirectionalLight();
+	DirectionalLight lightD2 = new DirectionalLight();
+
 	Shader sampler = new Shader();
 	Renderer rend = new Renderer(sampler);
 	
@@ -44,20 +46,24 @@ public class Window extends JPanel {
 	
 	public void init() {
 		scene = new Scene(cam);
-		cam.setLens(lens);
+		//cam.setLens(lens);
 		
 		cam.setPaint(painter);
 		scene.setCamera(cam);
 		cam.pos = new Vector3f(25, 20, -25);
 		cam.setDirection(new Vector3d(-0.35f, -0.6f, 1));
 
-		scene.addLight(light);
+		//scene.addLight(light);
+		scene.addLight(lightD);
+		//scene.addLight(lightD2);
 		
 		
 		scene.addObject(ground);
 		
 		
 		light.dir = new Vector3f(16, 10, 16);
+		lightD.dir = new Vector3f(1, -1, 1);
+		lightD2.dir = new Vector3f(-1, -1, -1);
 		
 		ground.pos = new Vector3f(0, 1, 0);
 		ground.offset = 1;

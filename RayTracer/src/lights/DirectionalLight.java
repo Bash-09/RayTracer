@@ -1,6 +1,7 @@
 package lights;
 
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import rays.Ray;
 import samplers.Sample;
@@ -13,4 +14,9 @@ public class DirectionalLight extends Light{
 		return out;
 	}
 
+	@Override
+	public Vector3f getCol(Ray toLight) {
+		return col;
+	}
+	
 }

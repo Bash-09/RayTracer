@@ -14,6 +14,8 @@ public abstract class Light {
 	
 	public abstract Ray getLightSampleRay(Sample samp, Vector3d point);
 	
-	public boolean visible = true;
+	public boolean visible = false;
+	
+	public abstract Vector3f getCol(Ray toLight);
 	
 }

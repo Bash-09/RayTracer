@@ -52,11 +52,13 @@ public class Shader {
 	
 	private ArrayList<Light> lights;
 	
+	Vector3f ambience = new Vector3f(0.0f, 0.0f, 0.0f);
+	
 	//Sample using the selected method
 	private Color sampleJitter(int i, int j) {
 		Vector3f outCol = new Vector3f();
 		
-		int samples = 100;
+		int samples = 10;
 		
 		lights = scene.getLights();
 		Sample sample = new Sample(samples);
@@ -149,7 +151,8 @@ public class Shader {
 		
 		for(Light i : lights) {
 			if(i.visible) {
-				specular.add(sampleSpecularLight(ray, i, 100));
+				Vector3f tempSpec = sampleSpecularLight(ray, i, 100);
+				specular.add(tempSpec);
 			}
 		}
 		
@@ -175,7 +178,7 @@ public class Shader {
 	}
 	
 	private Vector3f sampleShadow(Vector3d point, Sample sample) {
-		Vector3f intensity = new Vector3f(0.05f, 0.05f, 0.05f);
+		Vector3f intensity = new Vector3f(ambience);
 		
 		//Iterate through all of the lights
 		for(Light i : lights) {
@@ -187,11 +190,11 @@ public class Shader {
 			if(record.nearest() != null) {
 				if(shadowRay.hasLength) {
 					if(record.nearest().getDistance() > shadowRay.t) {
-						intensity.add(i.col);
+						intensity.add(i.getCol(shadowRay));
 					}
 				} 
 			} else {
-				intensity.add(i.col);
+				intensity.add(i.getCol(shadowRay));
 			}
 			
 			
@@ -228,11 +231,13 @@ public class Shader {
 		if(rDotL < 0) {
 			return new Vector3f(0, 0, 0);
 		}
-		//float specular = (float)Math.pow(rDotL/(ref.length()*toL.length()), specularConstant);
-		float specular = (float)Math.pow(rDotL, e);
+		float specular = (float)Math.pow(rDotL/(ref.length()*toL.length()), e);
 		
-		//System.out.println(specular);
-		return new Vector3f(light.col).mul(specular);
+		Vector3f out = new Vector3f(light.col).mul(specular);
+		
+		
+		
+		return out;
 	}
 		
 }
