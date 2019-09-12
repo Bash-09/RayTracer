@@ -41,4 +41,8 @@ public class Camera {
 	public Painter getPainter() {
 		return painter;
 	}
+	
+	public void setView(ViewingPlane view) {
+		this.view = view;
+	}
 }

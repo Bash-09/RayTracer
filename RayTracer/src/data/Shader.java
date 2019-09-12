@@ -22,8 +22,8 @@ public class Shader {
 	}
 	
 	//Store which sampler to use, default = sample.JITTER
-	public sample type = sample.JITTER;
-	//public sample type = sample.NORMAL;
+	//public sample type = sample.JITTER;
+	public sample type = sample.NORMAL;
 	
 	private Scene scene;
 	
@@ -34,53 +34,62 @@ public class Shader {
 	
 	//Sample a pixel using the sampler type set
 	public Color sample(int i, int j) {
+		lights = scene.getLights();
 		
+		//Which type of rendering it would like
 		switch(type) {
+		//Render with one sample per pixel
 		case NORMAL:
 			return sampleNormal(i, j);
 			
+			//Render with numerous samples per pixel, slightly offset randomly each time
 		case JITTER:
 			return sampleJitter(i, j);
 			
+			//Not sure what this was supposed to do
 		case SURROUND:
 			return sampleSurround(i, j);
-			
 		}
 		
 		return null;
 	}
 	
 	private ArrayList<Light> lights;
+	private int samples = 25;
 	
+	//Default ambiaent light value
 	Vector3f ambience = new Vector3f(0.0f, 0.0f, 0.0f);
 	
-	//Sample using the selected method
+	//Sample using the jittering method
 	private Color sampleJitter(int i, int j) {
 		Vector3f outCol = new Vector3f();
 		
-		int samples = 5;
-		
-		lights = scene.getLights();
+		//Create a new sample object
 		Sample sample = new Sample(samples);
 		
+		//Loop for number of samples
 		for(int k = 0; k < samples; k++) {
+			//Slightly offset direction of each sample randomly
 			double x = i + Math.random();
 			double y = j + Math.random();
 			
+			//Sample that ray
 			Vector3f col = samplePoint(x, y, sample);
 			if(col == null) {
 				continue;
 			}
 			
+			//Add all the colours
 			outCol.add(col);
 			sample.increment();
 		}
 		
-		
+		//Average colour over all samples
 		outCol.div(samples);
 		
 		return Colour.getCol(outCol);
 	}
+	
 	
 	private Color sampleNormal(int i , int j) {
 		return Colour.getCol(samplePoint(i, j, new Sample(1)));
@@ -91,61 +100,61 @@ public class Shader {
 	}
 	
 	
-	
-	
 	private Vector3f samplePoint(double x, double y, Sample sample) {
 		//Create ray and cast it in the world
 		Ray ray = scene.getCamera().getRay(x, y);
 		Vector3f out = sampleRay(ray, 0, sample);
+		//TODO Fix lens flare sampling for visible light-sources
 		out.add(sampleLensFlare(ray, sample));
+		
 		return out;
 	}
 	
+	//Sample a ray
 	private Vector3f sampleRay(Ray ray, int depth, Sample sample) {
-		
+		//Vector to store colour
 		Vector3f outCol = new Vector3f();
 		
-		ShadeRec record = scene.castRay(ray);
-		
-		//check if there was a collision
+		ShadeRec record = scene.castRay(ray); //Cast ray in scene
 		Collision collision = record.nearest();
 		
-		if(collision == null) {
+		if(collision == null) {		//If there was no collision, return sky colour
 			Vector3f out = new Vector3f(scene.sky);
 			return out;
 		}
 		
+		//Otherwise
 		//Sample collision
 		outCol = sampleCollision(collision, depth, sample);
 		
 		return outCol;
 	}
 	
-	
+	//Max number of recursive raycasts
 	private int maxRecursions = 5;
 	
+	//Sample a collision
 	private Vector3f sampleCollision(Collision col, int depth, Sample sample) {
-		
+		//Check if material is reflective (will call another raycast for a reflection)
 		if(col.getObject().mat.reflection && depth < maxRecursions) {
-			//Reflect ray on object
-			Ray newRay = new Ray(col.getInc());
-			newRay.reflect(col.getObject().getNormal(col.getPoint()));
-			newRay.origin = col.getPoint();
-			depth++;
+
+			Ray newRay = col.getOut();
+			depth++; //Another layer deep in recursive raycasts
 			
-			
+			//Get colours of reflection and the lighting
 			Vector3f reflection = sampleRay(newRay, depth, sample);
 			Vector3f colour = sampleLight(col, sample);
 			
-			
+			//Mix the reflection and the colour from the light depending on the reflective factor of the material
 			return Colour.mixColour(colour.x,colour.y,colour.z, 1-col.getObject().mat.reflectiveFactor, reflection.x, reflection.y, reflection.z);
 			
 		} else {
+			//Otherwise just return value from a light sampling
 			return sampleLight(col, sample);
 		}
-		
 	}
 	
+	//
 	private Vector3f sampleLensFlare(Ray ray, Sample samp) {
 		Vector3f out = new Vector3f();
 		Vector3f specular = new Vector3f();
@@ -194,7 +203,7 @@ public class Shader {
 
 		Vector3f col = new Vector3f(light.getCol(sampleRay));
 
-		col.div((float)Math.PI);
+		col.mul(coll.getObject().mat.albedo/(float)Math.PI);
 		
 		float dot = (float)(toLight.x*norm.x + toLight.y*norm.y + toLight.z*norm.z);
 		

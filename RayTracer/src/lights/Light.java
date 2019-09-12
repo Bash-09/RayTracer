@@ -18,6 +18,6 @@ public abstract class Light {
 	
 	public abstract Vector3f getCol(Ray toLight);
 	
-	public float intensity = 2f;
+	public float intensity = 5f;
 	
 }

@@ -12,4 +12,7 @@ public class Material {
 	public boolean reflection = false;
 	public float reflectiveFactor = 0.2f;
 	
+	//Amount of light reflected
+	public float albedo = 0.18f;
+	
 }

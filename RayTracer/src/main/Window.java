@@ -13,73 +13,85 @@ import org.joml.Vector3f;
 
 import camera.Painter;
 import camera.PinHoleCamera;
+import camera.ViewingPlane;
 import data.Shader;
 import geometry.Plane;
-import geometry.Sphere;
 import lights.DirectionalLight;
-import lights.PointLight;
+import materials.Material;
 import renderer.Renderer;
 import world.Scene;
 
 public class Window extends JPanel {
+	private static final long serialVersionUID = 1L;
 
 	Painter painter = new Painter(this);
 	
 	Scene scene;
 	
-	PinHoleCamera cam = new PinHoleCamera(60);
 	//Lens lens = new Lens(11);
+	PinHoleCamera cam = new PinHoleCamera(60);
+	ViewingPlane view = new ViewingPlane(
+			1, //w
+			1, //h
+			
+			400, //x-res
+			400);//y-res
 	
-	//DirectionalLight light = new DirectionalLight();
-	PointLight light = new PointLight();
-	DirectionalLight lightD = new DirectionalLight();
-	DirectionalLight lightD2 = new DirectionalLight();
-
 	Shader sampler = new Shader();
 	Renderer rend = new Renderer(sampler);
 	
 	Plane ground = new Plane();
 
-	Sphere[] spheres = new Sphere[16];
+	
+	
+	Plane leftWall = new Plane();
+	Plane rightWall = new Plane();
+	Plane roof = new Plane();
+
+	//PointLight light = new PointLight();
+	DirectionalLight light = new DirectionalLight();
 	
 	public void init() {
 		scene = new Scene(cam);
 		//cam.setLens(lens);
+		cam.setView(view);
 		
 		cam.setPaint(painter);
 		scene.setCamera(cam);
-		cam.pos = new Vector3f(25, 20, -25);
-		cam.setDirection(new Vector3d(-0.35f, -0.6f, 1));
+		
+		cam.pos = new Vector3f(0, 0, 0);
+		cam.setDirection(new Vector3d(0, 0, -1));
 
-		scene.addLight(light);
-		//scene.addLight(lightD);
-		//scene.addLight(lightD2);
 		
 		
 		scene.addObject(ground);
 		
-		
-		light.dir = new Vector3f(16, 10, 16);
-		lightD.dir = new Vector3f(0, -1, 0);
-		lightD2.dir = new Vector3f(-1, -1, -1);
-		
 		ground.pos = new Vector3f(0, 1, 0);
-		ground.offset = 1;
 		ground.mat.col = new Vector3f(0.5f, 0.2f, 0.2f);
 		ground.mat.reflection = true;
 		
+		Material mat = new Material();
+		mat.col = new Vector3f(0.5f, 0.9f, 0.2f);
 		
-		for(int i = 0; i < spheres.length; i++) {
-			
-			spheres[i] = new Sphere(2.5f);
-			spheres[i].pos = new Vector3f(i/4*8, 1, (i%4)*8);
-			//spheres[i].mat.reflection = true;
-			spheres[i].mat.col = new Vector3f(0.2f, 0.7f, 0.5f);
-			spheres[i].mat.reflection = true;
-			
-			scene.addObject(spheres[i]);
-		}
+		leftWall	.pos = new Vector3f(1, 0, 0);
+		rightWall	.pos = new Vector3f(1, 0, 0);
+		roof		.pos = new Vector3f(0, -1, 0);
 		
+		leftWall	.mat = mat;
+		rightWall	.mat = mat;
+		roof		.mat = mat;
+		
+		
+		//leftWall	.offset = -10;
+		rightWall	.offset = 0.000001f;
+		//roof	    .offset = 7;
+		
+		//scene.addObject(leftWall);
+		scene.addObject(rightWall);
+		//scene.addObject(roof);
+
+		light.dir = new Vector3f(0, -1, 0);
+		scene.addLight(light);
 	}
 	
 	

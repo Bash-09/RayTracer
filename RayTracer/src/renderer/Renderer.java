@@ -19,7 +19,6 @@ public class Renderer implements Runnable{
 	private BufferedImage img;
 	private Shader sampler;
 	
-	private Scene scene;
 	private Camera cam;
 	private ViewingPlane view;
 	
@@ -42,7 +41,6 @@ public class Renderer implements Runnable{
 		sampler.setScene(scene);
 		
 		//Get required objects
-		this.scene = scene;
 		this.cam = scene.getCamera();
 		this.view = scene.getCamera().getView();
 		//Create image

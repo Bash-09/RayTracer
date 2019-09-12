@@ -14,6 +14,8 @@ public class Plane extends Prop{
 	@Override
 	public ShadeRec trace(Ray ray, ShadeRec record) {
 		
+		z = -ax - by + d
+		
 		double d = offset;
 		
 		double a = pos.x;
@@ -36,9 +38,9 @@ public class Plane extends Prop{
 	public Vector3d getNormal(Vector3d point) {
 		Vector3d normal = new Vector3d();
 		
-		normal.x = -pos.x;
-		normal.y = -pos.y;
-		normal.z = -pos.z;
+		normal.x = pos.x;
+		normal.y = pos.y;
+		normal.z = pos.z;
 		
 		return normal;
 	}

@@ -46,9 +46,6 @@ public class PinHoleCamera extends Camera{
 		viewY.z = viewZ.x * viewX.y;
 		
 		viewY.normalize();
-		
-		
-		
 	}
 	
 	public Ray getRay(double i, double j) {
