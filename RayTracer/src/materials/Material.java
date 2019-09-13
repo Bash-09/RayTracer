@@ -4,6 +4,7 @@ import org.joml.Vector3f;
 
 public class Material {
 
+	//Spread of specular
 	public float specularFactor = 15;
 	public float specularReflection = 1;
 	

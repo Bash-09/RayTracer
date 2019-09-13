@@ -16,7 +16,8 @@ import camera.PinHoleCamera;
 import camera.ViewingPlane;
 import data.Shader;
 import geometry.Plane;
-import lights.DirectionalLight;
+import geometry.Sphere;
+import lights.PointLight;
 import materials.Material;
 import renderer.Renderer;
 import world.Scene;
@@ -24,6 +25,27 @@ import world.Scene;
 public class Window extends JPanel {
 	private static final long serialVersionUID = 1L;
 
+	/*
+	 * Required for rendering
+	 * 
+	 * Create:
+	 * Camera object (Pinhole camera forperspective viewing)
+	 * Scene object (add the camera created earlier)
+	 * Painter object and add the window to draw to
+	 * Shader object
+	 * Renderer object (with the shader created earlier)
+	 * 
+	 * Add painter to camera
+	 * Add at least 1 light to the scene
+	 * 
+	 * Add any objects you wish to the scene
+	 * 
+	 * Call Renderer.rend() passing it the scene you wish to render
+	 * 
+	 * 
+	 */
+	
+	
 	Painter painter = new Painter(this);
 	
 	Scene scene;
@@ -31,11 +53,11 @@ public class Window extends JPanel {
 	//Lens lens = new Lens(11);
 	PinHoleCamera cam = new PinHoleCamera(60);
 	ViewingPlane view = new ViewingPlane(
-			1, //w
-			1, //h
+			16, //w
+			9, //h
 			
-			400, //x-res
-			400);//y-res
+			1920, //x-res
+			1080);//y-res
 	
 	Shader sampler = new Shader();
 	Renderer rend = new Renderer(sampler);
@@ -47,9 +69,13 @@ public class Window extends JPanel {
 	Plane leftWall = new Plane();
 	Plane rightWall = new Plane();
 	Plane roof = new Plane();
+	Plane farWall = new Plane();
+	
+	Sphere sphere = new Sphere(1);
 
-	//PointLight light = new PointLight();
-	DirectionalLight light = new DirectionalLight();
+
+	PointLight light = new PointLight();
+	//DirectionalLight light = new DirectionalLight();
 	
 	public void init() {
 		scene = new Scene(cam);
@@ -59,39 +85,56 @@ public class Window extends JPanel {
 		cam.setPaint(painter);
 		scene.setCamera(cam);
 		
-		cam.pos = new Vector3f(0, 0, 0);
-		cam.setDirection(new Vector3d(0, 0, -1));
+		cam.pos = new Vector3f(0, 3, -4);
+		cam.setDirection(new Vector3d(0, 0, 1));
 
 		
 		
 		scene.addObject(ground);
 		
-		ground.pos = new Vector3f(0, 1, 0);
+		ground.pos = new Vector3f(0, 0, 0);
+		ground.normal = new Vector3d(0, 1, 0);
 		ground.mat.col = new Vector3f(0.5f, 0.2f, 0.2f);
 		ground.mat.reflection = true;
 		
 		Material mat = new Material();
 		mat.col = new Vector3f(0.5f, 0.9f, 0.2f);
 		
-		leftWall	.pos = new Vector3f(1, 0, 0);
-		rightWall	.pos = new Vector3f(1, 0, 0);
-		roof		.pos = new Vector3f(0, -1, 0);
+		Material sMat = new Material();
+		sMat.col = new Vector3f(0.1f, 0.8f, 0.4f);
+		sMat.reflection = true;
+		sMat.reflectiveFactor = 0.7f;
+		sMat.specularFactor = 25;
+		//sMat.specularReflection
 		
+		mat = ground.mat;
+		
+		leftWall	.normal = new Vector3d(-1, 0, 0);
+		rightWall	.normal = new Vector3d(1, 0, 0);
+		roof		.normal = new Vector3d(0, -1, 0);
+		farWall		.normal = new Vector3d(0, 0, -1);
+
+		leftWall	.pos = new Vector3f(-4, 0, 0); 
+		rightWall	.pos = new Vector3f(4, 0, 0); 
+		roof		.pos = new Vector3f(0, 10, 0);
+		farWall		.pos = new Vector3f(0, 0, 100);
+
 		leftWall	.mat = mat;
 		rightWall	.mat = mat;
+		farWall		.mat = mat;
 		roof		.mat = mat;
 		
+		sphere.mat = sMat;
+		sphere.pos = new Vector3f(0, 1, 7);
 		
-		//leftWall	.offset = -10;
-		rightWall	.offset = 0.000001f;
-		//roof	    .offset = 7;
-		
-		//scene.addObject(leftWall);
+		scene.addObject(leftWall);
 		scene.addObject(rightWall);
-		//scene.addObject(roof);
+		scene.addObject(roof);
+		scene.addObject(sphere);
 
-		light.dir = new Vector3f(0, -1, 0);
+		light.dir = new Vector3f(0, 5, 30);
 		scene.addLight(light);
+		
 	}
 	
 	
@@ -110,13 +153,18 @@ public class Window extends JPanel {
 	
 	public void exportFrames(String filenames) {
 		
-		int frames = 1000;
+		int frames = 600;
 		
 		new File("exports/"+filenames).mkdirs();
 		
 		
 		
 		for(int i = 0; i < frames; i++) {
+			
+			if(i < 72) {
+				animate();
+				continue;
+			}
 			
 			BufferedImage frame = render();
 			File output = new File("exports/"+filenames+"/"+filenames+i+".png");
@@ -132,7 +180,7 @@ public class Window extends JPanel {
 	
 	private void animate() {
 		
-		//lens.focalLength += 0.02f;
+		light.dir.z -= 0.1f;
 		
 	}
 
