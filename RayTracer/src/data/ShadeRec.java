@@ -14,12 +14,7 @@ public class ShadeRec {
 	private ArrayList<Collision> collisions = new ArrayList<>();
 	
 	private boolean collided = false;
-	Scene scene;
-	
-	public ShadeRec(Scene scene) {
-		this.scene = scene;
-	}
-	
+
 	public Prop getObject() {
 		return nearest().getObject();
 	}
@@ -28,31 +23,11 @@ public class ShadeRec {
 		Collision closest = nearest();
 		
 		if(closest == null) {
-			return scene.sky;
+			return null;
 		}
 		Vector3f col = closest.getObject().mat.col;
 		
 		return col;
-		//Vector3f lightCol = getLightValue(closest);
-		
-		//col = Colour.mixColour(col.x, col.y, col.z, lightCol.length(),lightCol.x, lightCol.y, lightCol.z);
-		
-		//return col;
-		
-		
-		
-		/*
-		Vector3f col = new Vector3f();
-		Ray ray = closest.getInc();
-		col.z = (float)Math.cos(ray.origin.z+ray.direction.z*closest.getDistance()*10);
-		col.x = (float)Math.sin(ray.origin.x+ray.direction.x*closest.getDistance()*10);
-		col.y = (float)Math.sin(ray.origin.z+ray.direction.z*closest.getDistance()*10);
-		
-
-		col = Colour.col(col);
-		return col;
-		*/
-		
 	}
 	
 	public Collision nearest() {

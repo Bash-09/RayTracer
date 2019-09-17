@@ -1,7 +1,6 @@
 package geometry;
 
 import org.joml.Vector3d;
-import org.joml.Vector3f;
 
 import data.Collision;
 import data.ShadeRec;

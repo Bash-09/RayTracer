@@ -44,7 +44,7 @@ public class Scene {
 		
 	
 	public ShadeRec castRay(Ray ray) {
-		ShadeRec record = new ShadeRec(this);
+		ShadeRec record = new ShadeRec();
 		return castRay(ray, record);
 	}
 	
