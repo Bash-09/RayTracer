@@ -62,7 +62,7 @@ public class PinHoleCamera extends Camera{
 		Vector3d viewX = new Vector3d(this.viewX);
 		Vector3d viewY = new Vector3d(this.viewY);
 		
-		double x = -view.w/2 + i*view.xs +view.xs/2;
+		double x = view.w/2 - i*view.xs - view.xs/2;
 		double y = -view.h/2 + j*view.ys + view.ys/2;
 		viewX.mul(x);
 		viewY.mul(y);

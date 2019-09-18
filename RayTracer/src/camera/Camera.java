@@ -28,7 +28,7 @@ public class Camera {
 	}
 	
 	public Vector3f pos = new Vector3f(0, 0, 0);
-	public Vector3f direction = new Vector3f(0, 0, 0);
+	public Vector3f direction = new Vector3f(0, 0, 1);
 	
 	public ViewingPlane getView() {
 		return view;

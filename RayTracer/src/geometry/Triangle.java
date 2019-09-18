@@ -35,20 +35,22 @@ public class Triangle extends Prop{
 	
 	@Override
 	public ShadeRec trace(Ray ray, ShadeRec record) {
-		double a,b,c,d,e,f,g,h,i;
+
 		
+		double a,b,c,d,e,f,g,h,i;
+		//Matrix
 		a =	p2.x-p1.x;	b = p3.x-p1.x;	c = -ray.direction.x;
 		d =	p2.y-p1.y;	e = p3.y-p1.y;	f = -ray.direction.y;
 		g =	p2.z-p1.z;	h = p3.z-p1.z;	i = -ray.direction.z;
 		
 		Vector3d oMa = new Vector3d(ray.origin);
 		oMa.sub(p1);
-		
+		//Determinant
 		double det = a*(e*i - f*h) - b*(d*i - f*g) + c*(d*h - e*g);
 		if(det == 0) {
 			return record;
 		}
-		
+		//Inverse matrix operations
 		double sum1 = oMa.x*(e*i-f*h) + oMa.y*(h*c-b*i) + oMa.z*(b*f-c*d);
 		double sum2 = oMa.x*(g*f-d*i) + oMa.y*(a*i-g*c) + oMa.z*(d*c-a*f);
 		double sum3 = oMa.x*(d*h-e*g) + oMa.y*(g*b-a*h) + oMa.z*(a*e-b*d);
@@ -58,7 +60,7 @@ public class Triangle extends Prop{
 		double t = sum3/det;
 		
 		if(u < 0 || u > 1) {
-			//return record;
+			return record;
 		}
 		if(v < 0 || v > 1) {
 			return record;
@@ -68,6 +70,44 @@ public class Triangle extends Prop{
 		}
 		
 		record.addCollision(new Collision(this, ray, t));
+		
+		
+		
+		/*
+		Vector3d sideA = new Vector3d(p2);
+		sideA.sub(p1);
+		Vector3d sideB = new Vector3d(p3);
+		sideA.sub(p2);
+		Vector3d sideC = new Vector3d(p1);
+		sideA.sub(p3);
+		
+		ShadeRec tempRec = plane.trace(ray, new ShadeRec());
+		if(tempRec.nearest() == null) {
+			return record;
+		}
+		
+		Vector3d p = tempRec.nearest().getPoint();
+		
+		Vector3d c0 = new Vector3d(p).sub(p1);
+		Vector3d c1 = new Vector3d(p).sub(p2);
+		Vector3d c2 = new Vector3d(p).sub(p3);
+
+		sideA.cross(c0);
+		sideB.cross(c1);
+		sideC.cross(c2);
+		
+		
+		Vector3d v0v1 = new Vector3d(normal);
+		
+		double dot1 = v0v1.x*sideA.x + v0v1.y*sideA.y + v0v1.z*sideA.z;
+		double dot2 = v0v1.x*sideB.x + v0v1.y*sideB.y + v0v1.z*sideB.z;
+		double dot3 = v0v1.x*sideC.x + v0v1.y*sideC.y + v0v1.z*sideC.z;
+
+		if(dot1 > 0 && dot2 > 0 && dot3 > 0) {
+			record.addCollision(new Collision(this, ray, tempRec.nearest().getDistance()));
+		}
+		*/
+		
 		
 		return record;
 	}

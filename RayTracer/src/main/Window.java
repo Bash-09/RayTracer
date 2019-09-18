@@ -15,6 +15,7 @@ import camera.Painter;
 import camera.PinHoleCamera;
 import camera.ViewingPlane;
 import data.Shader;
+import geometry.Plane;
 import geometry.Sphere;
 import geometry.Triangle;
 import lights.DirectionalLight;
@@ -51,13 +52,13 @@ public class Window extends JPanel {
 	Scene scene;
 	
 	//Lens lens = new Lens(11);
-	PinHoleCamera cam = new PinHoleCamera(60);
+	PinHoleCamera cam = new PinHoleCamera(90);
 	ViewingPlane view = new ViewingPlane(
 			1, //w
 			1, //h
 			
-			400, //x-res
-			400);//y-res
+			600, //x-res
+			600);//y-res
 	
 	Shader sampler = new Shader();
 	Renderer rend = new Renderer(sampler);
@@ -69,7 +70,12 @@ public class Window extends JPanel {
 	DirectionalLight light = new DirectionalLight();
 	
 	Triangle tri = new Triangle();
+	Plane ground = new Plane();
 	
+	Material refMat = new Material();
+	Sphere leftS = new Sphere(0.5f);
+	Sphere rightS = new Sphere(0.5f);
+
 	public void init() {
 		scene = new Scene(cam);
 		//cam.setLens(lens);
@@ -78,7 +84,7 @@ public class Window extends JPanel {
 		cam.setPaint(painter);
 		scene.setCamera(cam);
 		
-		cam.pos = new Vector3f(0, 3, -4);
+		cam.pos = new Vector3f(0, 2, -3);
 		cam.setDirection(new Vector3d(0, 0, 1));
 
 		Material sMat = new Material();
@@ -94,17 +100,45 @@ public class Window extends JPanel {
 		//scene.addObject(sphere);
 
 		light.dir = new Vector3f(-0.3f, -1, 3f);
-		light.intensity = 1;
+		light.intensity = 10;
 		scene.addLight(light);
 		
-		Vector3d a = new Vector3d(0, 1, 17);
-		Vector3d b = new Vector3d(-2, 1, 17);
-		Vector3d c = new Vector3d(-2, -2, 17);
+		/*
+		Vector3d a = new Vector3d(0, 3f, 0);
+		Vector3d b = new Vector3d(-1, 1f, 1);
+		Vector3d c = new Vector3d(1, 1f, -1);
+		*/
 		
-		tri.setPoints(a, b, c);
+		Vector3d a = new Vector3d(-2, 1, 1);
+		Vector3d b = new Vector3d(2, 1, 1);
+		Vector3d c = new Vector3d(0, 3, 0);
+		
+		tri.setPoints(c, a, b);
 		tri.mat = sMat;
 		scene.addObject(tri);
 
+		
+		ground.pos = new Vector3f(0, 0, 0);
+		ground.normal = new Vector3d(0, 1, 0);
+		ground.mat.reflection = true;
+		ground.mat.reflectiveFactor = 0.2f;
+		ground.mat.col = new Vector3f(0.8f, 0.6f, 0.4f);
+		scene.addObject(ground);
+		
+		
+		
+		leftS.pos = new Vector3f(-2, 1, 0);
+		rightS.pos = new Vector3f(2, 1, 0);
+		
+		leftS.mat = refMat;
+		rightS.mat = refMat;
+
+		scene.addObject(leftS);
+		scene.addObject(rightS);
+		
+		refMat.col = new Vector3f(0.7f, 0.2f, 0);
+		refMat.reflection = true;
+		refMat.reflectiveFactor = 0.5f;
 	}
 	
 	

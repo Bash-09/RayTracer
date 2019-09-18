@@ -58,7 +58,7 @@ public class Shader {
 	private int samples = 50;
 	
 	//Default ambiaent light value
-	Vector3f ambience = new Vector3f(0.5f, 0.5f, 0.5f);
+	Vector3f ambience = new Vector3f(0.1f, 0.1f, 0.1f);
 	
 	//Sample using the jittering method
 	private Color sampleJitter(int i, int j) {
