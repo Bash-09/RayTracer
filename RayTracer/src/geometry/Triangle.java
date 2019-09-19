@@ -20,12 +20,13 @@ public class Triangle extends Prop{
 		
 		Vector3d bMa = new Vector3d(p2);
 		bMa.sub(p1);
+		bMa.normalize();
 		Vector3d cMa = new Vector3d(p3);
 		cMa.sub(p1);
+		cMa.normalize();
 		
-		normal.x = bMa.y * cMa.z;
-		normal.y = bMa.z * cMa.x;
-		normal.z = bMa.x * cMa.y;
+		normal = new Vector3d(bMa);
+		normal.cross(cMa);
 		normal.normalize();
 		
 		plane.pos = new Vector3f((float)p1.x, (float)p1.y, (float)p1.z);

@@ -22,10 +22,14 @@ public class Tracer_App {
 			frame.setVisible(true);
 		}
 
+		
+		window.exportMaterial("TestMaterial");
+		
 		window.init();
 		
-		
 		window.render();
+		
+
 		//window.exportFrames("LightInABox");
 		
 	}

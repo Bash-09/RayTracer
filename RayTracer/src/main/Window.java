@@ -4,12 +4,21 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import camera.Painter;
 import camera.PinHoleCamera;
@@ -76,6 +85,9 @@ public class Window extends JPanel {
 	Sphere leftS = new Sphere(0.5f);
 	Sphere rightS = new Sphere(0.5f);
 
+	Material sMat = new Material();
+	
+	
 	public void init() {
 		scene = new Scene(cam);
 		//cam.setLens(lens);
@@ -87,12 +99,7 @@ public class Window extends JPanel {
 		cam.pos = new Vector3f(0, 2, -3);
 		cam.setDirection(new Vector3d(0, 0, 1));
 
-		Material sMat = new Material();
-		sMat.col = new Vector3f(0.1f, 0.8f, 0.4f);
-		//sMat.reflection = true;
-		sMat.reflectiveFactor = 0.7f;
-		sMat.specularFactor = 10;
-		//sMat.specularReflection
+		
 		
 		sphere.mat = sMat;
 		sphere.pos = new Vector3f(0, 1, 7);
@@ -103,15 +110,9 @@ public class Window extends JPanel {
 		light.intensity = 10;
 		scene.addLight(light);
 		
-		/*
-		Vector3d a = new Vector3d(0, 3f, 0);
-		Vector3d b = new Vector3d(-1, 1f, 1);
-		Vector3d c = new Vector3d(1, 1f, -1);
-		*/
-		
 		Vector3d a = new Vector3d(-2, 1, 1);
 		Vector3d b = new Vector3d(2, 1, 1);
-		Vector3d c = new Vector3d(0, 3, 0);
+		Vector3d c = new Vector3d(-2, 3, 1);
 		
 		tri.setPoints(c, a, b);
 		tri.mat = sMat;
@@ -179,6 +180,41 @@ public class Window extends JPanel {
 			animate();
 		}
 		
+		
+	}
+	
+	@JsonProperty("wrapper") @JsonIgnoreProperties(ignoreUnknown = true)
+	public void exportMaterial(String filename) {
+		
+		
+		String jsonString = "{\"name\":\""+filename+"\"}";
+		
+		new File("RayTracer/resources").mkdirs();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		
+		sMat = new Material();
+		
+			File matFile = new File("resources/objects/"+filename+".json");
+			try {
+				
+				//mapper.writeValue(matFile, sMat);
+				
+				sMat = mapper.readValue(matFile, Material.class);
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		
 	}
 	
