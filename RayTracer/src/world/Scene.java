@@ -1,38 +1,39 @@
 package world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import camera.Camera;
-import data.Shader;
 import data.ShadeRec;
 import geometry.Prop;
-import geometry.Sphere;
+import io.Settings;
+import io.TextParser;
 import lights.Light;
+import materials.Material;
 import rays.Ray;
 
-public class Scene {
+public class Scene implements Settings{
 	
-	private Camera camera;
+	private String activeCamera;
+	public String name = "";
 		
-	public Scene(Camera cam) {
-		camera = cam;
-	}
 	public Scene() {}
 	
-	private ArrayList<Prop> objects = new ArrayList<>();
-	private ArrayList<Light> lights = new ArrayList<>();
-	
-	public Vector3f sky = new Vector3f(0.6f, 0.6f, 0.9f);
+	public HashMap<String, Material> materials = new HashMap<>();
+	public HashMap<String, Prop> objects = new HashMap<>();
+	public HashMap<String, Light> lights = new HashMap<>();
+	public HashMap<String, Camera> cameras = new HashMap<>();
+
+	public Vector3f sky = new Vector3f(0.1f, 0.1f, 0.15f);
 	
 	public void addObject(Prop obj) {
-		objects.add(obj);
+		objects.put(obj.name, obj);
 	}
 	
-	public void setCamera(Camera cam) {
-		this.camera = cam;
+	public void addCamera(Camera cam) {
+		cameras.put(cam.name, cam);
 	}
 	
 	public void addLight(Light light) {
@@ -60,6 +61,24 @@ public class Scene {
 	
 	public ArrayList<Light> getLights() {
 		return lights;
+	}
+	
+	@Override
+	public void setup(String[] source) {
+		for(int i = 0; i < source.length; i++) {
+			
+			String[] settings = source[i].split("=");
+			
+			switch(settings[0]) {
+			case "name":
+				name = settings[1];
+				break;
+			case "sky":
+				float[] nums = TextParser.parseVector(settings[1]);
+				sky = new Vector3f(nums[0], nums[1], nums[2]);
+			}
+			
+		}
 	}
 
 	

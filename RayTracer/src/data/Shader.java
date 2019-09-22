@@ -22,8 +22,8 @@ public class Shader {
 	}
 	
 	//Store which sampler to use, default = sample.JITTER
-	//public sample type = sample.JITTER;
-	public sample type = sample.NORMAL;
+	public sample type = sample.JITTER;
+	//public sample type = sample.NORMAL;
 	
 	private Scene scene;
 	
@@ -58,7 +58,7 @@ public class Shader {
 	private int samples = 50;
 	
 	//Default ambiaent light value
-	Vector3f ambience = new Vector3f(0.1f, 0.1f, 0.1f);
+	Vector3f ambience = new Vector3f(0.05f, 0.05f, 0.05f);
 	
 	//Sample using the jittering method
 	private Color sampleJitter(int i, int j) {

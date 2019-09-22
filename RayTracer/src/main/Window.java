@@ -22,7 +22,7 @@ import geometry.Plane;
 import geometry.Sphere;
 import geometry.Triangle;
 import io.Importer;
-import lights.DirectionalLight;
+import lights.PointLight;
 import materials.Material;
 import renderer.Renderer;
 import world.Scene;
@@ -61,8 +61,8 @@ public class Window extends JPanel {
 			1, //w
 			1, //h
 			
-			600, //x-res
-			600);//y-res
+			800, //x-res
+			800);//y-res
 	
 	Shader sampler = new Shader();
 	Renderer rend = new Renderer(sampler);
@@ -70,8 +70,8 @@ public class Window extends JPanel {
 	Sphere sphere = new Sphere(1);
 
 
-	//PointLight light = new PointLight();
-	DirectionalLight light = new DirectionalLight();
+	PointLight light = new PointLight();
+	//DirectionalLight light = new DirectionalLight();
 	
 	Triangle tri = new Triangle();
 	Plane ground = new Plane();
@@ -101,13 +101,14 @@ public class Window extends JPanel {
 		
 		//scene.addObject(sphere);
 
-		light.dir = new Vector3f(-0.3f, -1, 3f);
-		light.intensity = 10;
+		//light.dir = new Vector3f(-0.3f, -1, 3f);
+		light.dir = new Vector3f(1, 3, 1);
+		light.intensity = 2;
 		scene.addLight(light);
 		
-		Vector3d a = new Vector3d(-2, 1, 1);
-		Vector3d b = new Vector3d(2, 1, 1);
-		Vector3d c = new Vector3d(-2, 3, 1);
+		Vector3d a = new Vector3d(-2, 1, 3);
+		Vector3d b = new Vector3d(2, 1, 3);
+		Vector3d c = new Vector3d(-2, 3, 3);
 		
 		tri.setPoints(c, a, b);
 		tri.mat = sMat;
@@ -132,9 +133,12 @@ public class Window extends JPanel {
 		scene.addObject(leftS);
 		scene.addObject(rightS);
 		
-		refMat.col = new Vector3f(0.7f, 0.2f, 0);
+		refMat.col = new Vector3f(0.8549f, 0.6471f, 0.125490f);
 		refMat.reflection = true;
-		refMat.reflectiveFactor = 0.5f;
+		refMat.reflectiveFactor = 0.2f;
+		refMat.specularFactor = 50;
+		refMat.specularReflection = 0.8f;
+		refMat.albedo = 0.25f;
 	}
 	
 	
@@ -150,12 +154,19 @@ public class Window extends JPanel {
 		}
 	}
 	
+	public void exportImage(String filename) {
+		BufferedImage frame = render();
+		File output = new File("exports/images/"+filename+".png");
+		try {
+			ImageIO.write(frame,  "png", output);
+		} catch (IOException e) {}
+	}
 	
 	public void exportFrames(String filenames) {
 		
 		int frames = 600;
 		
-		new File("exports/"+filenames).mkdirs();
+		new File("exports/videos/"+filenames).mkdirs();
 		
 		
 		
@@ -167,7 +178,7 @@ public class Window extends JPanel {
 			}
 			
 			BufferedImage frame = render();
-			File output = new File("exports/"+filenames+"/"+filenames+i+".png");
+			File output = new File("exports/videos/"+filenames+"/"+filenames+i+".png");
 			try {
 				ImageIO.write(frame,  "png", output);
 			} catch (IOException e) {}

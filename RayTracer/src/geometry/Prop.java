@@ -7,13 +7,22 @@ import data.ShadeRec;
 import materials.Material;
 import rays.Ray;
 import utils.Colour;
+import utils.ID;
 
 public abstract class Prop {
 
+	public String name;
+	
 	public Prop(Material mat) {
 		this.mat = mat;
 	}
 	public Prop() {
+		name = Integer.toString(ID.getID());
+		mat = new Material();
+	}
+	
+	public Prop(String name) {
+		this.name = name;
 		mat = new Material();
 	}
 	

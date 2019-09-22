@@ -28,6 +28,7 @@ public class Tracer_App {
 		window.init();
 		
 		window.render();
+		//window.exportImage("Australium");
 		
 
 		//window.exportFrames("LightInABox");

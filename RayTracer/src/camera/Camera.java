@@ -5,8 +5,11 @@ import java.awt.image.BufferedImage;
 import org.joml.Vector3f;
 
 import rays.Ray;
+import utils.ID;
 
 public class Camera {
+	
+	public String name = Integer.toString(ID.getID());
 	
 	public Ray getRay(double i, double j) {
 		
