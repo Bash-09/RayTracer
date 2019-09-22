@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -15,10 +13,6 @@ import org.joml.Vector3f;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import camera.Painter;
 import camera.PinHoleCamera;
@@ -27,6 +21,7 @@ import data.Shader;
 import geometry.Plane;
 import geometry.Sphere;
 import geometry.Triangle;
+import io.Importer;
 import lights.DirectionalLight;
 import materials.Material;
 import renderer.Renderer;
@@ -186,7 +181,7 @@ public class Window extends JPanel {
 	@JsonProperty("wrapper") @JsonIgnoreProperties(ignoreUnknown = true)
 	public void exportMaterial(String filename) {
 		
-		
+		/*
 		String jsonString = "{\"name\":\""+filename+"\"}";
 		
 		new File("RayTracer/resources").mkdirs();
@@ -214,7 +209,14 @@ public class Window extends JPanel {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+		*/
+		
+		Importer importer = new Importer();
+		try {
+			importer.importFile(filename);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

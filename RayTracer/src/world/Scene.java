@@ -20,6 +20,7 @@ public class Scene {
 	public Scene(Camera cam) {
 		camera = cam;
 	}
+	public Scene() {}
 	
 	private ArrayList<Prop> objects = new ArrayList<>();
 	private ArrayList<Light> lights = new ArrayList<>();

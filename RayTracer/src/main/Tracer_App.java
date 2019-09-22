@@ -23,7 +23,7 @@ public class Tracer_App {
 		}
 
 		
-		window.exportMaterial("TestMaterial");
+		window.exportMaterial("Format");
 		
 		window.init();
 		
