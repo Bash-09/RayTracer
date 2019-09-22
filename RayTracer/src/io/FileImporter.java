@@ -63,4 +63,10 @@ public class FileImporter {
 		}
 	}
 	
+	private void parseTopic(String topic, String source) {
+		
+		
+		
+	}
+	
 }
