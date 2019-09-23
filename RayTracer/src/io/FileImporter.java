@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+import camera.Painter;
 import camera.PinHoleCamera;
 import geometry.Plane;
 import geometry.Prop;
@@ -21,8 +22,11 @@ public class FileImporter {
 	private BufferedReader reader;
 	
 	private HashMap<String, Material> materials;
+	private Painter paint;
 	
-	public Scene readFile(String filename) throws IOException {
+	public Scene readFile(String filename, Painter paint) throws IOException {
+		this.paint = paint;
+		
 		Scene scene = new Scene();
 		materials = new HashMap<>();
 		
@@ -214,7 +218,7 @@ public class FileImporter {
 				String[] settings = command[2].split(",");
 				cam.setup(settings);
 				cam.name = command[0];
-				System.out.println(cam.name);
+				cam.setPaint(paint);
 				scene.addCamera(cam);
 				
 			} else if(command[1].equals("json")) {
@@ -249,6 +253,9 @@ public class FileImporter {
 				
 				prop.setup(command[2].split(","));
 				prop.mat = materials.get(prop.materialName);
+				if(prop.mat == null) {
+					prop.mat = new Material();
+				}
 				scene.addObject(prop);
 				
 			} else if(command[1].equals("json")) {

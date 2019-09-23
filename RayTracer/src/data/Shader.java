@@ -55,7 +55,7 @@ public class Shader {
 	}
 	
 	private ArrayList<Light> lights;
-	private int samples = 50;
+	public int samples = 50;
 	
 	//Default ambiaent light value
 	Vector3f ambience = new Vector3f(0.05f, 0.05f, 0.05f);

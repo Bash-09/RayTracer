@@ -84,13 +84,11 @@ cam1 = new(pos=0:2:0, dir=0:-0.2:1, fov=90);
 props{
 Sphere-sphere1 = new(pos=0:3:5, r=1, mat=cheese);
 Plane-ground = new(pos=0:0:0, normal=0:1:0, mat=dirt);
-Sphere-sphere2 = new(pos=-2:3:5, r=1, mat=ground);
+Sphere-sphere2 = new(pos=-2:3:5, r=1, mat=dirt);
 }
 
 lights{
-Directional-sun = new(dir=0.2:-1:0.5, col=1:1:1, intensity=2);
+Directional-sun = new(dir=0.2:-1:0.5, col=1:1:1, intensity=5);
 }
-
-
 
 

@@ -43,11 +43,8 @@ public class Window extends JPanel {
 	 */
 	
 	
-	Painter painter = new Painter(this);
-	
-	Scene scene;
-	
 	//Lens lens = new Lens(11);
+	Painter painter = new Painter(this);
 	ViewingPlane view = new ViewingPlane(
 			1, //w
 			1, //h
@@ -55,22 +52,20 @@ public class Window extends JPanel {
 			600, //x-res
 			600);//y-res
 	
-	Shader sampler = new Shader();
-	Renderer rend = new Renderer(sampler);
+	Shader shader = new Shader();
+	Renderer rend = new Renderer(shader);
+	
+	Scene scene;
 	
 	public void init() {
 		
 		FileImporter importer = new FileImporter();
 		
 		try {
-			scene = importer.readFile("TestImport");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			scene = importer.readFile("TestImport", painter);
+		} catch (IOException e) {}
 		
 		scene.getCamera().setView(view);
-		scene.getCamera().setPaint(painter);
 	}
 	
 	
@@ -98,6 +93,8 @@ public class Window extends JPanel {
 			ImageIO.write(frame,  "png", output);
 		} catch (IOException e) {}
 	}
+	
+	
 	
 	public void exportFrames(String filenames) {
 		
