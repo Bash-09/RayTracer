@@ -15,6 +15,7 @@ import camera.Painter;
 import camera.PinHoleCamera;
 import camera.ViewingPlane;
 import data.Shader;
+import data.Shader.sample;
 import io.FileImporter;
 import renderer.Renderer;
 import world.Scene;
@@ -58,6 +59,9 @@ public class Window extends JPanel {
 	Scene scene;
 	
 	public void init() {
+		
+		shader.samples = 50;
+		shader.type = sample.JITTER;
 		
 		FileImporter importer = new FileImporter();
 		
