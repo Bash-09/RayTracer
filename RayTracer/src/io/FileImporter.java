@@ -21,48 +21,59 @@ public class FileImporter {
 
 	private BufferedReader reader;
 	
+	//HashMap of materials to use on the props
 	private HashMap<String, Material> materials;
+	//Painter object which is attached to the cameras
 	private Painter paint;
 	
+	//Read in scene source file and return a full scene Object
 	public Scene readFile(String filename, Painter paint) throws IOException {
 		this.paint = paint;
 		
+		//Init scene and materials
 		Scene scene = new Scene();
 		materials = new HashMap<>();
 		
+		//Get file
 		File file = new File("resources/"+filename);
-		
+		//Read file
 		reader = new BufferedReader(new FileReader(file));
 		
-		
+		//Strings to store data from source file
 		String source = "";
 		String out = "";
 		while(out != null) {
+			//Read line into out, append out onto source
 			out = reader.readLine();
 			source += out;
 		}
-		
+		//Split source into characters
 		char[] chars = source.toCharArray();
-		
+		//Create scene object
 		scene = parseSource(chars, scene);
 		
 		return scene;
 	}
 	
+	//Create scene object from source chars
 	private Scene parseSource(char[] chars, Scene scene) {
 		
+		//Variables to keep track of the topics (scene{}, materials{} etc)
 		boolean inTopic = false;
 		String topic = "";
 		String source = "";
 		int depth = 0;
 		
+		//Arrays to store commands for each topic
 		String[] sceneSrc = null;
 		String[] matSrc = null;
 		String[] camSrc = null;
 		String[] propSrc = null;
 		String[] lightSrc = null;
 		
+		//Sieve through topics
 		for(int i = 0; i < chars.length; i++) {
+			//Skip spaces
 			if(chars[i] == ' ') {
 				continue;
 			}
@@ -87,9 +98,9 @@ public class FileImporter {
 					source += chars[i];
 					break;
 				}
-				//Exit topic
+				//Exit topic if in the otermost layer
 				inTopic = false;
-				
+				//Split source topic by line delimiter
 				String[] commands = source.split(";");
 				//Put in the right topic source
 				switch(topic) {
@@ -130,7 +141,7 @@ public class FileImporter {
 		parseCameras(camSrc, scene);
 		parseProps(propSrc, scene);
 		parseLights(lightSrc, scene);
-		
+		//Return final scene
 		return scene;
 	}
 	
