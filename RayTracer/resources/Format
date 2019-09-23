@@ -1,66 +1,96 @@
+Structure of a .scene file::::::::::::
+					
 scene{
-name = Test;
-sky = 0.1:0.1:0.1;
+details;
+}
+
+props{
+Object-name = new(details); 
+}
+
+Lights{
+LightType-name = new(details);
+}
+
+materials{
+name = new(details);
+}
+
+cameras{
+name = new(details);
+}
+
+///////////////////////////////////////
+Details of section, (req) means that details is required for that section, any other details are optional
+
+Scene details:
+name = <>;			name can be anything excluding '=' signs (spaces will be removed. instead use camel-typing e.g. HotBalloon)
+sky = r:g:b;		r:g:b values for colour of sky, where r:g:b each range from 0-1, 0 being none and 1 being full intensity of the colour.
+active = <>;	(req)	refers to the name of a camera object defined in the cameras{} section, chooses which camera will be rendered from.
+
+Props:
+Universal details: (these options are available for all objects)
+mat = <material>		Refers to the name of a material defined in the materials{} section
+pos = <>:<>:<>		Position in 3D space of the origin of that object
+Object,	Details:
+Sphere	r = <>		Radius of the sphere
+Plane		normal = <>:<>:<>	A 3D vector facing the normal to the plane from it’s position
+
+Light details:
+Universal details:
+col = r:g:b			r:g:b values for the colour of the emitted light from 0→1
+intensity = <>		A number for how bright the light-source is
+
+LightTypes:
+Directional (Light is uniformly distributed over the entire 3D space coming from a specified direction)
+details:
+dir = <>:<>:<>		3D vector representing the direction the light is facing
+
+Point (Light is emitted from a point in 3D space, intensity of light dims as distance from the light increases)
+details:
+pos = <>:<>:<>		3D point in space for the light to be emitted from.
+
+Cameras details:
+pos = <>:<>:<>		Should know what the position is by now
+dir = <>:<>:<>		3D vector representing the direction the camera is facing
+fov = <>			Angle in degrees for fov of the camera from left side to right side
+
+Materials details:
+reflection = true/false	If, or not, the material will have any kind of reflection
+reflectiveFactor = <>	Value from 0→1 on how reflective the surface is, 0 being not, 1 being a perfect reflection (like a mirror)
+specularFactor = <>	Defines how concentrated the specular lighting is where a smaller number e.g. 5 will give a large specular area and a higher value e.g. 30 will give a very small specular area (resulting in a shinier look)
+specularReflection <>	I don’t remember what this does
+albedo = <>			Value from 0→1 representing a percentage of how much light is scattered from a light, thus 0 will be darker and 1 will be greater, default is 0.18, based off of real world data.
+Col = <>:<>:<> 		r:g:b, you figure the rest out.
+
+////////////////////////////////////////////////////
+Example .scene file (the following can be put into a file and can be imported into the RayTracer to render a scene)
+
+scene{
+name = SampleScene;
+sky = 0.3:0.3:0.6;
 active = cam1;
 }
 
 materials{
-plastic = url();
-metal = json();
 cheese = new(reflection=true,specularFactor=25, col=0.5:0.2:0.7);
+dirt = new(reflection=true, specularFactor=7, col=0.6:0.3:0.2);
 }
 
 cameras{
-main = url();
-cam1 = json({});
-cam2 = new(pos=0:0:0, dir=0:0:1, fov=90);
+cam1 = new(pos=0:2:0, dir=0:-0.2:1, fov=90);
 }
 
 props{
-Sphere-sphere1 = new(pos=0:3:5, r=0.7, mat=plastic);
-Plane-plane = json();
-Mesh-object = obj(bla bla bla, mat=cheese);
+Sphere-sphere1 = new(pos=0:3:5, r=1, mat=cheese);
+Plane-ground = new(pos=0:0:0, normal=0:1:0, mat=dirt);
+Sphere-sphere2 = new(pos=-2:3:5, r=1, mat=ground);
 }
 
 lights{
-Point-light1 = new(pos=1:2:3, intensity=2, col=1:1:1);
-Directional-sun = new(dir=0.2:-1:0.5, col=1:1:1);
+Directional-sun = new(dir=0.2:-1:0.5, col=1:1:1, intensity=2);
 }
 
-
-Structure of a .scene file::::::::::::
-					
-scene{
-name = <name>; 	
-sky = <>:<>:<>; //Where <> in <>:<>:<> are the RGB values of the colour
-active = <camera name>;
-}
-
-props{
-Object-name = new(details); //Objects can be:   details include:
-								Sphere				pos=<>:<>:<>
-								Plane				mat=<material name>
-							
-}
-
-
-must have:
-scene{}
-props{}
-materials{}
-lights{}
-
-in scene, options are:
-name = <name>;
-sky = <>:<>:<>;
-active = <camera>;		---
-
-in props:
-Object-name = details
-
-Objects include:
-Sphere
-Plane
 
 
 
