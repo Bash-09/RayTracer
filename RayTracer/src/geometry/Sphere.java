@@ -7,12 +7,15 @@ import data.Collision;
 import data.ShadeRec;
 import rays.Ray;
 
-public class Sphere extends Prop{
+public class Sphere extends Prop {
 	
 	protected float r;
 	
 	public Sphere(float r) {
 		this.r = r;
+	}
+	public Sphere() {
+		r = 1;
 	}
 	
 	@Override
@@ -53,6 +56,27 @@ public class Sphere extends Prop{
 		normal.normalize();
 		
 		return normal;
+	}
+	@Override
+	public void setup(String[] commands) {
+		for(int i = 0; i < commands.length; i++) {
+			String[] com = commands[i].split("=");
+			
+			switch(com[0]) {
+			case "mat":
+				materialName = com[1];
+				break;
+			case "pos":
+				String[] vals = com[1].split(":");
+				pos.x = Float.parseFloat(vals[0]);
+				pos.y = Float.parseFloat(vals[1]);
+				pos.z = Float.parseFloat(vals[2]);
+				break;
+			case "radius":
+				r = Float.parseFloat(com[1]);
+				break;
+			}
+		}
 	}
 	
 }

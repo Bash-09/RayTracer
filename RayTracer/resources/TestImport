@@ -1,0 +1,26 @@
+scene{
+name = Test;
+sky = 0.3:0.3:0.6;
+active = cam1;
+}
+
+materials{
+cheese = new(reflection=true,specularFactor=25, col=0.5:0.2:0.7);
+ground = new(reflection=true, specularFactor=7, col=0.6:0.3:0.2);
+}
+
+cameras{
+cam1 = new(pos=0:2:0, dir=0:-0.2:1, fov=90);
+}
+
+props{
+Sphere-sphere1 = new(pos=0:3:5, r=1, mat=cheese);
+Plane-plane = new(pos=0:0:0, normal=0:1:0, mat=ground);
+Sphere-sphere2 = new(pos=-2:3:5, r=1, mat=ground);
+}
+
+lights{
+Directional-sun = new(dir=0.2:-1:0.5, col=1:1:1, intensity=2);
+}
+
+

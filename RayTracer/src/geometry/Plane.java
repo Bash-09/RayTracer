@@ -31,5 +31,30 @@ public class Plane extends Prop{
 	public Vector3d getNormal(Vector3d point) {
 		return normal;
 	}
+
+	@Override
+	public void setup(String[] commands) {
+		for(int i = 0; i < commands.length; i++) {
+			String[] com = commands[i].split("=");
+			
+			switch(com[0]) {
+			case "mat":
+				materialName = com[1];
+				break;
+			case "pos":
+				String[] vals = com[1].split(":");
+				pos.x = Float.parseFloat(vals[0]);
+				pos.y = Float.parseFloat(vals[1]);
+				pos.z = Float.parseFloat(vals[2]);
+				break;
+			case "normal":
+				String[] vals2 = com[1].split(":");
+				normal.x = Float.parseFloat(vals2[0]);
+				normal.y = Float.parseFloat(vals2[1]);
+				normal.z = Float.parseFloat(vals2[2]);
+				break;
+			}
+		}
+	}
 	
 }

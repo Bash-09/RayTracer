@@ -1,11 +1,11 @@
 package camera;
 
 import org.joml.Vector3d;
-import org.joml.Vector3f;
 
+import io.Settings;
 import rays.Ray;
 
-public class PinHoleCamera extends Camera{
+public class PinHoleCamera extends Camera implements Settings{
 
 	double distance;
 	double fov;
@@ -18,6 +18,10 @@ public class PinHoleCamera extends Camera{
 
 	public PinHoleCamera(double fov) {	
 		this.fov = fov;
+		init();
+	}
+	public PinHoleCamera() {	
+		this.fov = 90;
 		init();
 	}
 	
@@ -94,6 +98,31 @@ public class PinHoleCamera extends Camera{
 	}
 	public void setDirection(Vector3d in) {
 		setDirection(in.x, in.y, in.z);
+	}
+
+	@Override
+	public void setup(String[] commands) {
+		for(int i = 0; i < commands.length; i++) {
+			String[] com = commands[i].split("=");
+			
+			switch(com[0]) {
+			case "dir":
+				String[] vals = com[1].split(":");
+				viewZ.x = Float.parseFloat(vals[0]);
+				viewZ.y = Float.parseFloat(vals[1]);
+				viewZ.z = Float.parseFloat(vals[2]);
+				break;
+			case "pos":
+				String[] vals2 = com[1].split(":");
+				pos.x = Float.parseFloat(vals2[0]);
+				pos.y = Float.parseFloat(vals2[1]);
+				pos.z = Float.parseFloat(vals2[2]);
+				break;
+			case "fov":
+				fov = Float.parseFloat(com[1]);
+			}
+		}
+		init();
 	}
 	
 	

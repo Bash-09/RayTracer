@@ -1,6 +1,7 @@
 scene{
 name = Test;
 sky = 0.1:0.1:0.1;
+active = cam1;
 }
 
 materials{
@@ -10,7 +11,7 @@ cheese = new(reflection=true,specularFactor=25, col=0.5:0.2:0.7);
 }
 
 cameras{
-main = URL();
+main = url();
 cam1 = json({});
 cam2 = new(pos=0:0:0, dir=0:0:1, fov=90);
 }
@@ -20,5 +21,46 @@ Sphere-sphere1 = new(pos=0:3:5, r=0.7, mat=plastic);
 Plane-plane = json();
 Mesh-object = obj(bla bla bla, mat=cheese);
 }
+
+lights{
+Point-light1 = new(pos=1:2:3, intensity=2, col=1:1:1);
+Directional-sun = new(dir=0.2:-1:0.5, col=1:1:1);
+}
+
+
+Structure of a .scene file::::::::::::
+					
+scene{
+name = <name>; 	
+sky = <>:<>:<>; //Where <> in <>:<>:<> are the RGB values of the colour
+active = <camera name>;
+}
+
+props{
+Object-name = new(details); //Objects can be:   details include:
+								Sphere				pos=<>:<>:<>
+								Plane				mat=<material name>
+							
+}
+
+
+must have:
+scene{}
+props{}
+materials{}
+lights{}
+
+in scene, options are:
+name = <name>;
+sky = <>:<>:<>;
+active = <camera>;		---
+
+in props:
+Object-name = details
+
+Objects include:
+Sphere
+Plane
+
 
 

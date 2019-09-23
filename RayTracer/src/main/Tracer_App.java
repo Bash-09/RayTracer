@@ -23,10 +23,9 @@ public class Tracer_App {
 		}
 
 		
-		window.exportMaterial("Format");
+		//window.exportMaterial("Format");
 		
 		window.init();
-		
 		window.render();
 		//window.exportImage("Australium");
 		

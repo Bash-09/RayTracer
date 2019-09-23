@@ -118,4 +118,10 @@ public class Triangle extends Prop{
 		return normal;
 	}
 
+	@Override
+	public void setup(String[] commands) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

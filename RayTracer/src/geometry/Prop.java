@@ -4,14 +4,15 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import data.ShadeRec;
+import io.Settings;
 import materials.Material;
 import rays.Ray;
-import utils.Colour;
 import utils.ID;
 
-public abstract class Prop {
+public abstract class Prop implements Settings{
 
 	public String name;
+	public String materialName;
 	
 	public Prop(Material mat) {
 		this.mat = mat;
