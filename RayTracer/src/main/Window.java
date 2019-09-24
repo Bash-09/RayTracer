@@ -50,8 +50,8 @@ public class Window extends JPanel {
 			1, //w
 			1, //h
 			
-			1000, //x-res
-			1000);//y-res
+			2000, //x-res
+			2000);//y-res
 	
 	Shader shader = new Shader();
 	Renderer rend = new Renderer(shader);
@@ -60,7 +60,7 @@ public class Window extends JPanel {
 	
 	public void init() {
 		
-		shader.samples = 50;
+		shader.samples = 30;
 		shader.type = sample.JITTER;
 		shader.maxRecursions = 10;
 		
