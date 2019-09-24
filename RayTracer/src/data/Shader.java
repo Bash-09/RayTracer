@@ -131,7 +131,7 @@ public class Shader {
 	}
 	
 	//Max number of recursive raycasts
-	private int maxRecursions = 5;
+	public int maxRecursions = 5;
 	
 	//Sample a collision
 	private Vector3f sampleCollision(Collision col, int depth, Sample sample) {

@@ -62,7 +62,7 @@ public class ImageCompiler implements Runnable{
 		paint.repaint(img);
 	}
 	
-	boolean rendering = false;
+	public boolean rendering = false;
 	private void render() {
 		rendering = true;
 		while(running || !stack.empty()) {

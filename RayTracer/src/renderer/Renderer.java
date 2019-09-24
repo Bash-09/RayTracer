@@ -63,16 +63,13 @@ public class Renderer implements Runnable{
 		
 		//Finish up rendering
 		pool.shutdown();
+		
 		//Wait for threads to finish
 		try {
-			if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
-			    pool.shutdownNow();
+			while(!pool.awaitTermination(10, TimeUnit.SECONDS)) {
+				System.out.println("Rendering");
 			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		} catch(Exception e) {}
 		compiler.finish();
 		
 		double finished = System.currentTimeMillis() - start;

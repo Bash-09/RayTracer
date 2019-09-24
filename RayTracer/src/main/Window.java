@@ -50,8 +50,8 @@ public class Window extends JPanel {
 			1, //w
 			1, //h
 			
-			600, //x-res
-			600);//y-res
+			1000, //x-res
+			1000);//y-res
 	
 	Shader shader = new Shader();
 	Renderer rend = new Renderer(shader);
@@ -62,11 +62,12 @@ public class Window extends JPanel {
 		
 		shader.samples = 50;
 		shader.type = sample.JITTER;
+		shader.maxRecursions = 10;
 		
 		FileImporter importer = new FileImporter();
 		
 		try {
-			scene = importer.readFile("TestImport", painter);
+			scene = importer.readFile("HallwayOrb.scene", painter);
 		} catch (IOException e) {}
 		
 		scene.getCamera().setView(view);

@@ -300,7 +300,7 @@ public class FileImporter {
 						return;
 				}
 				
-				light.setup(command[1].split(","));
+				light.setup(command[2].split(","));
 				scene.addLight(light);
 				
 			} else if(command[1].equals("json")) {
