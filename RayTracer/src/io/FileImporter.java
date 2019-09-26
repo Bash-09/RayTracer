@@ -35,7 +35,7 @@ public class FileImporter {
 		materials = new HashMap<>();
 		
 		//Get file
-		File file = new File("resources/"+filename);
+		File file = new File("resources/scenes"+filename);
 		//Read file
 		reader = new BufferedReader(new FileReader(file));
 		

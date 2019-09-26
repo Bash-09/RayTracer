@@ -27,7 +27,7 @@ public class Tracer_App {
 		
 		window.init();
 		//window.render();
-		window.exportImage("Orbeez");
+		//window.exportImage("Orbeez");
 		
 
 		//window.exportFrames("LightInABox");

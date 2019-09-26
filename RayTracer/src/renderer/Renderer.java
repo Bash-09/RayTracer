@@ -1,8 +1,9 @@
 package renderer;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.Stack;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +23,7 @@ public class Renderer implements Runnable{
 	private Camera cam;
 	private ViewingPlane view;
 	
-	private Stack<Integer> stack = new Stack<>();
+	private ArrayList<Pixel> pixels = new ArrayList<>();
 	
 	private static final int MAX_THREADS = 2000;
 	private ExecutorService pool;
@@ -46,16 +47,18 @@ public class Renderer implements Runnable{
 		//Create image
 		img = new BufferedImage(scene.getCamera().getView().w_r, scene.getCamera().getView().h_r, BufferedImage.TYPE_INT_ARGB);
 
-		//Push lines required to be rendered to the stack
-		for(int i = view.w_r-1; i >= 0; i--) {
-			stack.push(i);
+
+		for(int i = 0; i < view.w_r; i++) {
+			for(int j = 0; j < view.h_r; j++) {
+				pixels.add(new Pixel(i, j));
+			}
 		}
 		
 		compiler = new ImageCompiler(img, cam.getPainter());
 		compiler.start();
 		
 		//Render each line on a different Thread
-		while(!stack.empty()) {
+		while(!pixels.isEmpty()) {
 			
 			pool.execute(this);
 			
@@ -80,39 +83,40 @@ public class Renderer implements Runnable{
 	
 	
 	
+	
 	//Push a pixel colour to the image
-	private void pushChunk(int i, Color[] cols) {
-		Chunk chunk = new Chunk(i, cols);
-		compiler.pushChunk(chunk);
+	private void renderPixel(Pixel pix) {
+		Point pos = pix.getPos();
+		pix.setColour(sampler.sample(pos.x, pos.y));
+		
+		compiler.pushPixel(pix);
 	}
 	
-	//Render a whole line of pixels
-	private void renderChunk(int i) {
-		Color[] chunk = new Color[view.h_r];
-		
-		for(int j = 0; j < view.h_r; j++) {
-			chunk[j] = sampler.sample(i, j);
-		}
-		pushChunk(i, chunk);
-	}
+	
+	
 	
 	//Get next line requiring rendering
-	private synchronized int getNext() {
-		if(stack.empty()) {
-			return -1;
+	private synchronized Pixel getNext() {
+		if(pixels.isEmpty()) {
+			return null;
 		}
-		return stack.pop();
+		
+		int index = (int)Math.random()*pixels.size();
+		Pixel pix = pixels.get(index);
+		pixels.remove(index);
+		return pix;
 	}
 
 	//Render a new chunk on the Thread
 	@Override
 	public void run() {
 		
-		int next = getNext();
-		if(next < 0) {
+		Pixel pix = getNext();
+		if(pix == null) {
 			return;
 		}
-		renderChunk(next);
+		
+		renderPixel(pix);
 		
 	}
 	

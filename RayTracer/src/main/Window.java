@@ -45,18 +45,20 @@ public class Window extends JPanel {
 	
 	
 	//Lens lens = new Lens(11);
-	Painter painter = new Painter(this);
-	ViewingPlane view = new ViewingPlane(
+	private Painter painter = new Painter(this);
+	private ViewingPlane view = new ViewingPlane(
 			1, //w
 			1, //h
 			
-			2000, //x-res
-			2000);//y-res
+			100, //x-res
+			100);//y-res
 	
-	Shader shader = new Shader();
-	Renderer rend = new Renderer(shader);
+	private Shader shader = new Shader();
+	private Renderer rend = new Renderer(shader);
 	
-	Scene scene;
+	private String file = "HallwayOrb.scene";
+	
+	private Scene scene;
 	
 	public void init() {
 		
@@ -67,21 +69,18 @@ public class Window extends JPanel {
 		FileImporter importer = new FileImporter();
 		
 		try {
-			scene = importer.readFile("HallwayOrb.scene", painter);
+			scene = importer.readFile(file, painter);
 		} catch (IOException e) {}
 		
 		scene.getCamera().setView(view);
+		
+		exportImage(file);
 	}
 	
 	
 	public BufferedImage render() {
 		return rend.render(scene);
 	}
-	
-	
-	
-	
-	
 	
 	
 	@Override

@@ -20,10 +20,10 @@ public class ImageCompiler implements Runnable{
 		render();
 	}
 	
-	private Stack<Chunk> stack = new Stack<>();
+	private Stack<Pixel> stack = new Stack<>();
 	
-	public void pushChunk(Chunk chunk) {
-		stack.push(chunk);
+	public void pushPixel(Pixel pix) {
+		stack.push(pix);
 	}
 
 	private boolean running = false;
@@ -54,10 +54,8 @@ public class ImageCompiler implements Runnable{
 			return;
 		}
 		
-		Chunk chunk = stack.pop();
-		for(int j = 0; j < chunk.chunk.length; j++) {
-			img.setRGB(chunk.getInd(), j, chunk.chunk[j].getRGB());
-		}
+		Pixel pix = stack.pop();
+		img.setRGB(pix.getPos().x, pix.getPos().y, pix.getCol().getRGB());
 		
 		paint.repaint(img);
 	}
