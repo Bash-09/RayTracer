@@ -101,7 +101,7 @@ public class Renderer implements Runnable{
 			return null;
 		}
 		
-		int index = (int)Math.random()*pixels.size();
+		int index = (int)(Math.random()*pixels.size());
 		Pixel pix = pixels.get(index);
 		pixels.remove(index);
 		return pix;
@@ -110,14 +110,14 @@ public class Renderer implements Runnable{
 	//Render a new chunk on the Thread
 	@Override
 	public void run() {
-		
-		Pixel pix = getNext();
-		if(pix == null) {
-			return;
+		for(int i = 0; i < 100; i++) {
+			Pixel pix = getNext();
+			if(pix == null) {
+				return;
+			}
+			
+			renderPixel(pix);
 		}
-		
-		renderPixel(pix);
-		
 	}
 	
 }

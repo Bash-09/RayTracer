@@ -50,8 +50,8 @@ public class Window extends JPanel {
 			1, //w
 			1, //h
 			
-			100, //x-res
-			100);//y-res
+			600, //x-res
+			600);//y-res
 	
 	private Shader shader = new Shader();
 	private Renderer rend = new Renderer(shader);

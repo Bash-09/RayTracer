@@ -49,15 +49,36 @@ public class ImageCompiler implements Runnable{
 		looper.start();
 	}
 	
-	private void update() {
-		if(stack.empty()) {
+	
+	boolean painted = false;
+	private void paint() {
+		if(painted) {
 			return;
 		}
-		
-		Pixel pix = stack.pop();
-		img.setRGB(pix.getPos().x, pix.getPos().y, pix.getCol().getRGB());
-		
 		paint.repaint(img);
+		painted = true;
+	}
+	
+	private void update() {
+		if(stack.empty()) {
+			
+			if(true) {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			paint();
+			return;
+		}
+		painted = false;
+		
+		while(!stack.isEmpty()) {
+			Pixel pix = stack.pop();
+			img.setRGB(pix.getPos().x, pix.getPos().y, pix.getCol().getRGB());
+		}
 	}
 	
 	public boolean rendering = false;
@@ -65,12 +86,6 @@ public class ImageCompiler implements Runnable{
 		rendering = true;
 		while(running || !stack.empty()) {
 			update();
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		rendering = false;
 	}
