@@ -1,5 +1,7 @@
 package camera;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -26,7 +28,5 @@ public class Painter {
 	public BufferedImage getImg() {
 		return img;
 	}
-	
-	
 	
 }

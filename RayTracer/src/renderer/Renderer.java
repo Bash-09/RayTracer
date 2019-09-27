@@ -1,9 +1,9 @@
 package renderer;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +24,7 @@ public class Renderer implements Runnable{
 	private ViewingPlane view;
 	
 	private ArrayList<Pixel> pixels = new ArrayList<>();
+	private Stack<Integer> cols = new Stack<>();
 	
 	private static final int MAX_THREADS = 2000;
 	private ExecutorService pool;
@@ -47,18 +48,15 @@ public class Renderer implements Runnable{
 		//Create image
 		img = new BufferedImage(scene.getCamera().getView().w_r, scene.getCamera().getView().h_r, BufferedImage.TYPE_INT_ARGB);
 
-
 		for(int i = 0; i < view.w_r; i++) {
-			for(int j = 0; j < view.h_r; j++) {
-				pixels.add(new Pixel(i, j));
-			}
+			cols.push(i);
 		}
 		
 		compiler = new ImageCompiler(img, cam.getPainter());
 		compiler.start();
 		
 		//Render each line on a different Thread
-		while(!pixels.isEmpty()) {
+		while(!cols.isEmpty()) {
 			
 			pool.execute(this);
 			
@@ -69,55 +67,56 @@ public class Renderer implements Runnable{
 		
 		//Wait for threads to finish
 		try {
-			while(!pool.awaitTermination(10, TimeUnit.SECONDS)) {
+			while(!pool.awaitTermination(2, TimeUnit.SECONDS)) {
 				System.out.println("Rendering");
 			}
 		} catch(Exception e) {}
 		compiler.finish();
 		
 		double finished = System.currentTimeMillis() - start;
-		System.out.println(finished);
+		System.out.println("Rendered in: "+finished/1000+" seconds.");
 		
 		return compiler.img;
-	}
+	}	
 	
-	
-	
-	
-	//Push a pixel colour to the image
-	private void renderPixel(Pixel pix) {
-		Point pos = pix.getPos();
-		pix.setColour(sampler.sample(pos.x, pos.y));
-		
-		compiler.pushPixel(pix);
-	}
-	
-	
-	
-	
-	//Get next line requiring rendering
-	private synchronized Pixel getNext() {
-		if(pixels.isEmpty()) {
-			return null;
+	private synchronized int getNextCol() {
+		if(cols.empty()) {
+			return -1;
+		} else {
+			return cols.pop();
 		}
-		
-		int index = (int)Math.random()*pixels.size();
-		Pixel pix = pixels.get(index);
-		pixels.remove(index);
-		return pix;
 	}
 
 	//Render a new chunk on the Thread
 	@Override
 	public void run() {
+		int col = getNextCol();
+		if(col < 0) return;
 		
-		Pixel pix = getNext();
-		if(pix == null) {
-			return;
+		Color[] cols = new Color[view.h_r];
+		for(int i=0; i < cols.length; i++) {
+			cols[i] = sampler.sample(col, i);
 		}
 		
-		renderPixel(pix);
+		compiler.addCol(col, cols);
+		percentage(view.h_r);
 		
+		System.gc();
+	}
+	
+	long pixel = 0;
+	public void percentage(int pixelsRendered) {
+		pixel+= pixelsRendered;
+		String percentage = Float.toString((float)pixel/(float)(view.w_r*view.h_r)*100);
+		String out = "";
+		char[] perc = percentage.toCharArray();
+		for(int i = 0; i < perc.length; i++) {
+			if(i > 4) break;
+			out += perc[i];
+		}
+		out += "%";
+		
+		System.out.println("Rendering: "+out);
 	}
 	
 }

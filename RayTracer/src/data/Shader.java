@@ -57,9 +57,6 @@ public class Shader {
 	private ArrayList<Light> lights;
 	public int samples = 50;
 	
-	//Default ambiaent light value
-	Vector3f ambience = new Vector3f(0.05f, 0.05f, 0.05f);
-	
 	//Sample using the jittering method
 	private Color sampleJitter(int i, int j) {
 		Vector3f outCol = new Vector3f();
@@ -178,7 +175,7 @@ public class Shader {
 		Vector3f shadow = sampleShadow(col, samp);
 		Vector3f specular;
 		
-		if(shadow.x == ambience.x && shadow.y == ambience.y && shadow.z == ambience.z) {
+		if(shadow.x == scene.ambience.x && shadow.y == scene.ambience.y && shadow.z == scene.ambience.z) {
 			specular = new Vector3f();
 		} else {
 			specular = sampleSpecular(col, samp).mul(0.5f);
@@ -214,7 +211,7 @@ public class Shader {
 	}
 	
 	private Vector3f sampleShadow(Collision col, Sample sample) {
-		Vector3f intensity = new Vector3f(ambience);
+		Vector3f intensity = new Vector3f(scene.ambience);
 		
 		//Iterate through all of the lights
 		for(Light i : lights) {

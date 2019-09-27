@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -50,13 +51,13 @@ public class Window extends JPanel {
 			1, //w
 			1, //h
 			
-			100, //x-res
-			100);//y-res
+			600, //x-res
+			600);//y-res
 	
 	private Shader shader = new Shader();
 	private Renderer rend = new Renderer(shader);
 	
-	private String file = "HallwayOrb.scene";
+	private String file = "HallwayOrb2.scene";
 	
 	private Scene scene;
 	
@@ -86,7 +87,11 @@ public class Window extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {	
 		if(!Tracer_App.headless) {
+			
+			g.setColor(Color.gray);
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			g.drawImage(painter.getImg(), 0, 0, this.getWidth(), this.getHeight(), null);
+			
 		}
 	}
 	

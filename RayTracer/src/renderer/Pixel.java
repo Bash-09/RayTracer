@@ -6,21 +6,11 @@ import java.awt.Point;
 public class Pixel {
 
 	public Pixel(int x, int y) {
-		pos = new Point(x, y);
+		pos = new int[2];
+		pos[0] = x;
+		pos[1] = y;
 	}
 	
-	private Point pos;
-	private Color col;
-	
-	public void setColour(Color col) {
-		this.col = col;
-	}
-	public Color getCol() {
-		return col;
-	}
-	
-	public Point getPos() {
-		return pos;
-	}
-	
+	public int[] pos;
+	public Color col;
 }

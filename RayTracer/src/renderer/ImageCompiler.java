@@ -1,6 +1,8 @@
 package renderer;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Stack;
 
 import camera.Painter;
@@ -20,12 +22,6 @@ public class ImageCompiler implements Runnable{
 		render();
 	}
 	
-	private Stack<Pixel> stack = new Stack<>();
-	
-	public void pushPixel(Pixel pix) {
-		stack.push(pix);
-	}
-
 	private boolean running = false;
 	Thread looper;
 	
@@ -50,27 +46,40 @@ public class ImageCompiler implements Runnable{
 	}
 	
 	private void update() {
-		if(stack.empty()) {
-			return;
-		}
-		
-		Pixel pix = stack.pop();
-		img.setRGB(pix.getPos().x, pix.getPos().y, pix.getCol().getRGB());
-		
-		paint.repaint(img);
-	}
-	
-	public boolean rendering = false;
-	private void render() {
-		rendering = true;
-		while(running || !stack.empty()) {
-			update();
+
+		if(cols.empty()) {
+			paint.repaint(img);
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			return;
+		}
+		
+		int x = cols.pop();
+		Color[] cols = colourmap.get(x);
+		for(int i = 0; i < cols.length; i++) {
+			
+			img.setRGB(x, i, cols[i].getRGB());
+			
+		}
+
+	}
+	private HashMap<Integer, Color[]> colourmap = new HashMap<>();
+	private Stack<Integer> cols = new Stack<>();
+	
+	public void addCol(int x, Color[] cols) {
+		colourmap.put(x, cols);
+		this.cols.push(x);
+	}
+	
+	public boolean rendering = false;
+	private void render() {
+		rendering = true;
+		while(running || !cols.empty()) {
+			update();
 		}
 		rendering = false;
 	}

@@ -29,6 +29,7 @@ public class Scene implements Settings{
 	private ArrayList<Light> lightsList = new ArrayList<Light>();
 
 	public Vector3f sky = new Vector3f(0.1f, 0.1f, 0.15f);
+	public Vector3f ambience = new Vector3f();
 	
 	public void addObject(Prop obj) {
 		objects.put(obj.name, obj);
@@ -82,6 +83,9 @@ public class Scene implements Settings{
 			case "active":
 				activeCamera = settings[1];
 				break;
+			case "ambient":
+				float[] nums2 = TextParser.parseVector(settings[1]);
+				ambience = new Vector3f(nums2[0], nums2[1], nums2[2]);
 			}
 			
 		}

@@ -1,0 +1,32 @@
+scene{
+name=HallwayOrb;
+active=main;
+ambience=0:0:0;
+}
+
+materials{
+wall=new(reflection=false, col=0.7:0.7:0.7);
+ball1 = new(col=1:0:0, specularFactor=7, reflection=true,reflectiveFactor=0.5);
+ball2 = new(col=0:1:0, specularFactor=7, reflection=true,reflectiveFactor=0.5);
+ball3 = new(col=0:0:1, specularFactor=7, reflection=true,reflectiveFactor=0.5);
+}
+
+cameras{
+main = new(pos=0:1:-2, dir=0:0:1, fov=70);
+}
+
+props{
+Sphere-s1 = new(pos=-2:1:5, mat=ball1, r=1);
+Sphere-s2 = new(pos=2:1:5, mat=ball2, r=1);
+Sphere-s3 = new(pos=0:3:5, mat=ball3, r=1);
+
+Plane-leftWall = new(pos=-4:0:8, normal=1:0:0, mat=wall);
+Plane-rightWall = new(pos=4:0:8, normal=-1:0:0, mat=wall);
+Plane-roof = new(pos = 0:5:0, normal=0:-1:0, mat=wall);
+Plane-floor = new(pos = 0:-1:0, normal=0:1:0, mat=wall);
+Plane-behind = new(pos = 0:0:-3, normal=0:0:1, mat=wall);
+}
+
+lights{
+Point-light = new(pos=0:2:1, col=1:1:1, intensity=3.5);
+}
