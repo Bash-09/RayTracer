@@ -5,16 +5,16 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Stack;
 
-import camera.Painter;
-
 public class ImageCompiler implements Runnable{
 
 	BufferedImage img;
 	Painter paint;
+	Renderer rend;
 	
-	public ImageCompiler(BufferedImage img, Painter paint) {
+	public ImageCompiler(BufferedImage img, Painter paint, Renderer rend) {
 		this.img = img;
 		this.paint = paint;
+		this.rend = rend;
 	}
 	
 	@Override
@@ -22,11 +22,9 @@ public class ImageCompiler implements Runnable{
 		render();
 	}
 	
-	private boolean running = false;
 	Thread looper;
 	
 	public BufferedImage finish() {
-		running = false;
 		looper = null;
 		
 		while(rendering) {
@@ -40,7 +38,6 @@ public class ImageCompiler implements Runnable{
 		return img;
 	}
 	public void start() {
-		running = true;
 		looper = new Thread(this);
 		looper.start();
 	}
@@ -49,8 +46,11 @@ public class ImageCompiler implements Runnable{
 
 		if(cols.empty()) {
 			paint.repaint(img);
+			if(rend.percentage()) {
+				rendering = false;
+			}
 			try {
-				Thread.sleep(1);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -70,7 +70,7 @@ public class ImageCompiler implements Runnable{
 	private HashMap<Integer, Color[]> colourmap = new HashMap<>();
 	private Stack<Integer> cols = new Stack<>();
 	
-	public void addCol(int x, Color[] cols) {
+	public synchronized void addCol(int x, Color[] cols) {
 		colourmap.put(x, cols);
 		this.cols.push(x);
 	}
@@ -78,10 +78,9 @@ public class ImageCompiler implements Runnable{
 	public boolean rendering = false;
 	private void render() {
 		rendering = true;
-		while(running || !cols.empty()) {
+		while(rendering) {
 			update();
 		}
-		rendering = false;
 	}
 	
 }

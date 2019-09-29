@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-import camera.Painter;
 import camera.PinHoleCamera;
 import geometry.Plane;
 import geometry.Prop;
@@ -15,6 +14,7 @@ import lights.DirectionalLight;
 import lights.Light;
 import lights.PointLight;
 import materials.Material;
+import renderer.Painter;
 import world.Scene;
 
 public class FileImporter {

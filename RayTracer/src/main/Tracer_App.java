@@ -30,7 +30,7 @@ public class Tracer_App {
 		//window.exportImage("Orbeez");
 		
 
-		//window.exportFrames("LightInABox");
+		window.exportFrames("ResChange");
 		
 	}
 	

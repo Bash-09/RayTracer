@@ -23,7 +23,6 @@ public class Renderer implements Runnable{
 	private Camera cam;
 	private ViewingPlane view;
 	
-	private ArrayList<Pixel> pixels = new ArrayList<>();
 	private Stack<Integer> cols = new Stack<>();
 	
 	private static final int MAX_THREADS = 2000;
@@ -48,11 +47,17 @@ public class Renderer implements Runnable{
 		//Create image
 		img = new BufferedImage(scene.getCamera().getView().w_r, scene.getCamera().getView().h_r, BufferedImage.TYPE_INT_ARGB);
 
+		ArrayList<Integer> ints = new ArrayList<>();
 		for(int i = 0; i < view.w_r; i++) {
-			cols.push(i);
+			ints.add(i);
+		}
+		while(!ints.isEmpty()) {
+			int i = (int)((float)ints.size()*Math.random());
+			cols.push(ints.get(i));
+			ints.remove(i);
 		}
 		
-		compiler = new ImageCompiler(img, cam.getPainter());
+		compiler = new ImageCompiler(img, cam.getPainter(), this);
 		compiler.start();
 		
 		//Render each line on a different Thread
@@ -68,7 +73,7 @@ public class Renderer implements Runnable{
 		//Wait for threads to finish
 		try {
 			while(!pool.awaitTermination(2, TimeUnit.SECONDS)) {
-				System.out.println("Rendering");
+				System.out.println("Working");
 			}
 		} catch(Exception e) {}
 		compiler.finish();
@@ -99,15 +104,19 @@ public class Renderer implements Runnable{
 		}
 		
 		compiler.addCol(col, cols);
-		percentage(view.h_r);
+		doneCol();
 		
 		System.gc();
 	}
 	
+	private synchronized void doneCol() {
+		pixel+=view.h_r;
+	}
+	
 	long pixel = 0;
-	public void percentage(int pixelsRendered) {
-		pixel+= pixelsRendered;
-		String percentage = Float.toString((float)pixel/(float)(view.w_r*view.h_r)*100);
+	public boolean percentage() {
+		int num = view.w_r*view.h_r;
+		String percentage = Float.toString((float)pixel/(float)num*100);
 		String out = "";
 		char[] perc = percentage.toCharArray();
 		for(int i = 0; i < perc.length; i++) {
@@ -117,6 +126,11 @@ public class Renderer implements Runnable{
 		out += "%";
 		
 		System.out.println("Rendering: "+out);
+		
+		if(pixel == num) {
+			return true;
+		}
+		return false;
 	}
 	
 }

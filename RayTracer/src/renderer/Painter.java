@@ -1,4 +1,4 @@
-package camera;
+package renderer;
 
 import java.awt.Color;
 import java.awt.Graphics;

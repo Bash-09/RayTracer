@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import org.joml.Vector3f;
 
 import rays.Ray;
+import renderer.Painter;
 import utils.ID;
 
 public class Camera {

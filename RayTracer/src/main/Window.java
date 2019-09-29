@@ -12,12 +12,12 @@ import javax.swing.JPanel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import camera.Painter;
 import camera.PinHoleCamera;
 import camera.ViewingPlane;
 import data.Shader;
 import data.Shader.sample;
 import io.FileImporter;
+import renderer.Painter;
 import renderer.Renderer;
 import world.Scene;
 
@@ -51,11 +51,11 @@ public class Window extends JPanel {
 			1, //w
 			1, //h
 			
-			600, //x-res
-			600);//y-res
+			10, //x-res
+			10);//y-res
 	
 	private Shader shader = new Shader();
-	private Renderer rend = new Renderer(shader);
+	private Renderer rend;
 	
 	private String file = "HallwayOrb2.scene";
 	
@@ -63,9 +63,11 @@ public class Window extends JPanel {
 	
 	public void init() {
 		
+		rend = new Renderer(shader);
+		
 		shader.samples = 30;
 		shader.type = sample.JITTER;
-		shader.maxRecursions = 10;
+		shader.maxRecursions = 5;
 		
 		FileImporter importer = new FileImporter();
 		
@@ -75,7 +77,6 @@ public class Window extends JPanel {
 		
 		scene.getCamera().setView(view);
 		
-		exportImage(file);
 	}
 	
 	
@@ -89,7 +90,7 @@ public class Window extends JPanel {
 		if(!Tracer_App.headless) {
 			
 			g.setColor(Color.gray);
-			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			//g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			g.drawImage(painter.getImg(), 0, 0, this.getWidth(), this.getHeight(), null);
 			
 		}
@@ -114,12 +115,7 @@ public class Window extends JPanel {
 		
 		
 		for(int i = 0; i < frames; i++) {
-			
-			if(i < 72) {
-				animate();
-				continue;
-			}
-			
+
 			BufferedImage frame = render();
 			File output = new File("exports/videos/"+filenames+"/"+filenames+i+".png");
 			try {
@@ -165,9 +161,16 @@ public class Window extends JPanel {
 			}
 		*/
 	}
-	
+	int res = 10;
 	private void animate() {
-		
+		init();
+		res++;
+		view = new ViewingPlane(
+				1, //w
+				1, //h
+				
+				res, //x-res
+				res);//y-res
 	}
 
 	
