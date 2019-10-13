@@ -26,11 +26,11 @@ public class Tracer_App {
 		//window.exportMaterial("Format");
 		
 		window.init();
-		//window.render();
-		//window.exportImage("Orbeez");
+		window.render();
+		//window.exportImage("Pyramid");
 		
 
-		window.exportFrames("ResChange");
+		//window.exportFrames("NormalMap");
 		
 	}
 	

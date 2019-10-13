@@ -25,18 +25,20 @@ public class ImageCompiler implements Runnable{
 	Thread looper;
 	
 	public BufferedImage finish() {
-		looper = null;
+		rendering = false;
 		
-		while(rendering) {
+		while(working) {
+			System.out.println("Building Image...");
 			try {
-				Thread.sleep(1);
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		
 		return img;
 	}
+	
 	public void start() {
 		looper = new Thread(this);
 		looper.start();
@@ -46,9 +48,9 @@ public class ImageCompiler implements Runnable{
 
 		if(cols.empty()) {
 			paint.repaint(img);
-			if(rend.percentage()) {
-				rendering = false;
-			}
+			
+			//rend.percentage();
+			
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -58,8 +60,9 @@ public class ImageCompiler implements Runnable{
 			return;
 		}
 		
-		int x = cols.pop();
-		Color[] cols = colourmap.get(x);
+		Chunk chunk = cols.pop();
+		Color[] cols = chunk.cols;
+		int x = chunk.x;
 		for(int i = 0; i < cols.length; i++) {
 			
 			img.setRGB(x, i, cols[i].getRGB());
@@ -67,20 +70,24 @@ public class ImageCompiler implements Runnable{
 		}
 
 	}
-	private HashMap<Integer, Color[]> colourmap = new HashMap<>();
-	private Stack<Integer> cols = new Stack<>();
+	private Stack<Chunk> cols;
 	
-	public synchronized void addCol(int x, Color[] cols) {
-		colourmap.put(x, cols);
-		this.cols.push(x);
+	public synchronized void addCol(Chunk chunk) {
+		cols.push(chunk);
 	}
 	
-	public boolean rendering = false;
+	private boolean rendering = false;
+	private boolean working = false;
+	
 	private void render() {
+		cols = new Stack<>();
+		
 		rendering = true;
-		while(rendering) {
+		working = true;
+		while(rendering || !cols.isEmpty()) {
 			update();
 		}
+		working = false;
 	}
 	
 }

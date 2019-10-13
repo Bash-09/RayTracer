@@ -83,7 +83,7 @@ public class Scene implements Settings{
 			case "active":
 				activeCamera = settings[1];
 				break;
-			case "ambient":
+			case "ambience":
 				float[] nums2 = TextParser.parseVector(settings[1]);
 				ambience = new Vector3f(nums2[0], nums2[1], nums2[2]);
 			}

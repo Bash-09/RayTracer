@@ -9,6 +9,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,6 +19,7 @@ import camera.PinHoleCamera;
 import camera.ViewingPlane;
 import data.Shader;
 import data.Shader.sample;
+import geometry.ErrorMesh;
 import io.FileImporter;
 import renderer.Painter;
 import renderer.Renderer;
@@ -51,23 +55,22 @@ public class Window extends JPanel {
 			1, //w
 			1, //h
 			
-			10, //x-res
-			10);//y-res
+			1000, //x-res
+			1000);//y-res
 	
 	private Shader shader = new Shader();
 	private Renderer rend;
 	
-	private String file = "HallwayOrb2.scene";
+	private String file = "MeshTest.scene";
 	
 	private Scene scene;
 	
 	public void init() {
-		
 		rend = new Renderer(shader);
 		
-		shader.samples = 30;
+		shader.samples = 25;
 		shader.type = sample.JITTER;
-		shader.maxRecursions = 5;
+		shader.maxRecursions = 3;
 		
 		FileImporter importer = new FileImporter();
 		
@@ -77,6 +80,21 @@ public class Window extends JPanel {
 		
 		scene.getCamera().setView(view);
 		
+		
+		ErrorMesh mesh = new ErrorMesh();
+		mesh.pos.x -= 2;
+		mesh.pos.y += 2;
+		
+		mesh.transform();
+		scene.addObject(mesh);
+		
+		
+		
+		ErrorMesh mesh2 = new ErrorMesh();
+		//mesh2.pos = new Vector3f(-2, 3, 0);
+		
+		mesh2.transform();
+		scene.addObject(mesh2);
 	}
 	
 	
@@ -107,6 +125,8 @@ public class Window extends JPanel {
 	
 	
 	public void exportFrames(String filenames) {
+		
+		animate();
 		
 		int frames = 600;
 		
@@ -161,16 +181,12 @@ public class Window extends JPanel {
 			}
 		*/
 	}
-	int res = 10;
+	Vector3d lookAt = new Vector3d(0, 0, 0);
+	Vector3d pos = new Vector3d(2);
+	Vector3d dir;
+	
 	private void animate() {
-		init();
-		res++;
-		view = new ViewingPlane(
-				1, //w
-				1, //h
-				
-				res, //x-res
-				res);//y-res
+		scene.getLights().get(0).dir.x += 0.05;
 	}
 
 	

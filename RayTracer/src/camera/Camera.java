@@ -2,7 +2,7 @@ package camera;
 
 import java.awt.image.BufferedImage;
 
-import org.joml.Vector3f;
+import org.joml.Vector3d;
 
 import rays.Ray;
 import renderer.Painter;
@@ -31,8 +31,8 @@ public class Camera {
 		painter = paint;
 	}
 	
-	public Vector3f pos = new Vector3f(0, 0, 0);
-	public Vector3f direction = new Vector3f(0, 0, 1);
+	public Vector3d pos = new Vector3d(0, 0, 0);
+	public Vector3d direction = new Vector3d(0, 0, 1);
 	
 	public ViewingPlane getView() {
 		return view;
@@ -48,5 +48,10 @@ public class Camera {
 	
 	public void setView(ViewingPlane view) {
 		this.view = view;
+		init();
 	}
+	
+	public void init() {
+		
+	};
 }

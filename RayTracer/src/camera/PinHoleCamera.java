@@ -8,7 +8,7 @@ import rays.Ray;
 public class PinHoleCamera extends Camera implements Settings{
 
 	double distance;
-	double fov;
+	public double fov;
 	
 	private Vector3d viewX;
 	private Vector3d viewZ = new Vector3d(0, 0, 1); //Also the direction vector of the camera
@@ -29,7 +29,9 @@ public class PinHoleCamera extends Camera implements Settings{
 		this.lens = lens;
 	}
 	
-	private void init() {
+	@Override
+	public void init() {
+		viewZ = direction;
 		viewZ.normalize();
 		double angleB = (180 - fov)/2;
 		double lengthB = (view.w*Math.sin(Math.toRadians(angleB)))/Math.sin(Math.toRadians(fov));
@@ -91,15 +93,17 @@ public class PinHoleCamera extends Camera implements Settings{
 	}
 	
 	public void setDirection(double x, double y, double z) {
+		direction = new Vector3d(x, y, z);
 		viewZ = new Vector3d(x, y, z);
 		viewZ.normalize();
 		
 		init();
 	}
+	
 	public void setDirection(Vector3d in) {
 		setDirection(in.x, in.y, in.z);
 	}
-
+	
 	@Override
 	public void setup(String[] commands) {
 		for(int i = 0; i < commands.length; i++) {

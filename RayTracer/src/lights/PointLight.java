@@ -23,6 +23,7 @@ public class PointLight extends Light{
 	public Vector3f getCol(Ray toLight) {
 		
 		double falloff = 150 * intensity / (4*Math.PI*toLight.t);
+		//double falloff = 1;
 		
 		Vector3f outCol = new Vector3f(col);
 		outCol.mul((float)falloff);

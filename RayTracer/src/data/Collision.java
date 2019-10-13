@@ -1,8 +1,11 @@
 package data;
 
+import org.joml.Vector2f;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import geometry.Prop;
+import geometry.Triangle;
 import rays.Ray;
 
 public class Collision {
@@ -10,12 +13,16 @@ public class Collision {
 	private Prop collide;
 	private Ray incoming;
 	private Ray outgoing;
+	private Vector3d normal;
+	private Vector2f textureCoords;
 	private double t;
 	
-	public Collision(Prop obj, Ray incRay, double t) {
+	public Collision(Prop obj, Ray incRay, double t, Vector3d normal, Vector2f text) {
+		this.normal = normal;
 		this.collide = obj;
 		incoming = incRay;
 		this.t = t;
+		this.textureCoords = text;
 		calcOut();
 	}
 	
@@ -44,15 +51,26 @@ public class Collision {
 	}
 	
 	private void calcOut() {
-		Vector3d normal = getObject().getNormal(getPoint());
 		outgoing = new Ray(incoming);
 		outgoing.reflect(normal);
 		outgoing.origin = new Vector3d(getPoint());
 	}
 	
 	public Vector3d getNormal() {
-		Vector3d normal = collide.getNormal(getPoint());
 		return normal;
+	}
+	
+	public Vector3f getCol() {
+		if(collide.getClass() == Triangle.class) {
+			
+			Triangle obj = (Triangle)collide;
+			if(obj.getMesh() != null && obj.getMesh().textured) {
+				Vector3f col = obj.getMesh().getTexture().getCol(textureCoords.x,textureCoords.y);
+				return col;
+			}
+		}
+		
+		return collide.mat.col;
 	}
 	
 }

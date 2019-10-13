@@ -1,6 +1,5 @@
 package geometry;
 
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import data.ShadeRec;
@@ -32,6 +31,5 @@ public abstract class Prop implements Settings{
 	public Vector3f pos = new Vector3f(0, 0, 0);
 	
 	public abstract ShadeRec trace(Ray ray, ShadeRec record);
-	public abstract Vector3d getNormal(Vector3d point);
 	
 }

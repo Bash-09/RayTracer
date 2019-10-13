@@ -41,8 +41,24 @@ public class Sphere extends Prop {
 			return record;
 		}
 		
-		record.addCollision(new Collision(this, ray, (-b + Math.sqrt(disc))/2*a));
-		record.addCollision(new Collision(this, ray, (-b - Math.sqrt(disc))/2*a));
+		double t1 = (-b + Math.sqrt(disc))/2*a;
+		double t2 = (-b - Math.sqrt(disc))/2*a;
+		
+		Vector3d pos1 = new Vector3d(ray.direction);
+		Vector3d pos2 = new Vector3d(pos1);
+		
+		pos1.mul(t1);
+		pos2.mul(t2);
+		
+		pos1.add(ray.origin);
+		pos2.add(ray.origin);
+		
+		pos1.sub(pos);
+		pos2.sub(pos);
+		
+		
+		record.addCollision(new Collision(this, ray, t1, pos1, null));
+		record.addCollision(new Collision(this, ray, t2, pos2, null));
 		
 		return record;
 	}
@@ -53,6 +69,7 @@ public class Sphere extends Prop {
 		normal.x = point.x - pos.x;
 		normal.y = point.y - pos.y;
 		normal.z = point.z - pos.z;
+
 		normal.normalize();
 		
 		return normal;

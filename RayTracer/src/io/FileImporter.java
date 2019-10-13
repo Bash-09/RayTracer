@@ -10,6 +10,7 @@ import camera.PinHoleCamera;
 import geometry.Plane;
 import geometry.Prop;
 import geometry.Sphere;
+import geometry.Triangle;
 import lights.DirectionalLight;
 import lights.Light;
 import lights.PointLight;
@@ -41,7 +42,7 @@ public class FileImporter {
 		
 		//Strings to store data from source file
 		String source = "";
-		String out = "";
+		String out = " ";
 		while(out != null) {
 			//Read line into out, append out onto source
 			out = reader.readLine();
@@ -74,7 +75,7 @@ public class FileImporter {
 		//Sieve through topics
 		for(int i = 0; i < chars.length; i++) {
 			//Skip spaces
-			if(chars[i] == ' ') {
+			if(chars[i] == ' ' || chars[i] == '	') {
 				continue;
 			}
 			
@@ -258,11 +259,16 @@ public class FileImporter {
 				case "Plane":
 					prop = new Plane();
 					break;
+				case "Triangle":
+					prop = new Triangle();
+					break;
 				default:
 						return;
 				}
 				
-				prop.setup(command[2].split(","));
+				String[] coms = command[2].split(",");
+				coms[0].trim();
+				prop.setup(coms);
 				prop.mat = materials.get(prop.materialName);
 				if(prop.mat == null) {
 					prop.mat = new Material();

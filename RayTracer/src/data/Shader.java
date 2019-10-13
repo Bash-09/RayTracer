@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
+import geometry.ErrorMesh;
+import geometry.Mesh;
 import lights.Light;
 import rays.Ray;
 import samplers.Sample;
@@ -144,7 +146,7 @@ public class Shader {
 			
 			//Mix the reflection and the colour from the light depending on the reflective factor of the material
 			return Colour.mixColour(colour.x,colour.y,colour.z, 1-col.getObject().mat.reflectiveFactor, reflection.x, reflection.y, reflection.z);
-			
+			//return Colour.combine(colour, reflection);
 		} else {
 			//Otherwise just return value from a light sampling
 			return sampleLight(col, sample);
@@ -170,7 +172,7 @@ public class Shader {
 	}
 	
 	private Vector3f sampleLight(Collision col, Sample samp) {
-		Vector3f colour = col.getObject().mat.col;
+		Vector3f colour = col.getCol();
 
 		Vector3f shadow = sampleShadow(col, samp);
 		Vector3f specular;
@@ -182,7 +184,6 @@ public class Shader {
 		}
 		
 		Vector3f outCol = Colour.combine(colour, shadow);
-		//TODO combine outCol and diffuse lighting
 		outCol.add(specular);
 		
 		

@@ -22,14 +22,9 @@ public class Plane extends Prop{
 		double nDotP = normal.x*pos.x + normal.y*pos.y + normal.z*pos.z;
 		double nDotRo = normal.x*ray.origin.x + normal.y*ray.origin.y + normal.z*ray.origin.z;
 		
-		record.addCollision(new Collision(this, ray, (nDotP - nDotRo)/nDotRd));
+		record.addCollision(new Collision(this, ray, (nDotP - nDotRo)/nDotRd, normal, null));
 
 		return record;
-	}
-	
-	@Override
-	public Vector3d getNormal(Vector3d point) {
-		return normal;
 	}
 
 	@Override

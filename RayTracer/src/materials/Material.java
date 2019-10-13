@@ -8,7 +8,6 @@ public class Material implements Settings{
 
 	//Spread of specular
 	public float specularFactor = 15;
-	public float specularReflection = 1;
 	
 	public Vector3f col = new Vector3f(1, 1, 1);
 	
@@ -38,9 +37,6 @@ public class Material implements Settings{
 				break;
 			case "albedo":
 				albedo = Float.parseFloat(com[1]);
-				break;
-			case "specularReflection":
-				specularReflection = Float.parseFloat(com[1]);
 				break;
 			case "col":
 				String[] vals = com[1].split(":");

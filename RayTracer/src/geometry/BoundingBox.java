@@ -6,10 +6,8 @@ import rays.Ray;
 
 public class BoundingBox{
 	
-	private Vector3d p1 = new Vector3d();
-	private Vector3d p2 = new Vector3d();
-	
-	
+	public Vector3d p1 = new Vector3d();
+	public Vector3d p2 = new Vector3d();
 	
 	public boolean inBounds(Ray ray) {
 		double ox = ray.origin.x;
@@ -98,6 +96,7 @@ public class BoundingBox{
 		t1 = ty_max;
 		if (tz_max < t1)
 		t1 = tz_max;
+		
 		return (t0 < t1);
 	}
 

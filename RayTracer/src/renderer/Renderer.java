@@ -41,6 +41,8 @@ public class Renderer implements Runnable{
 		
 		sampler.setScene(scene);
 		
+		pixel = 0;
+		
 		//Get required objects
 		this.cam = scene.getCamera();
 		this.view = scene.getCamera().getView();
@@ -51,10 +53,17 @@ public class Renderer implements Runnable{
 		for(int i = 0; i < view.w_r; i++) {
 			ints.add(i);
 		}
-		while(!ints.isEmpty()) {
-			int i = (int)((float)ints.size()*Math.random());
-			cols.push(ints.get(i));
-			ints.remove(i);
+		boolean shuffle = false;
+		if(shuffle) {
+			while(!ints.isEmpty()) {
+				int i = (int)((float)ints.size()*Math.random());
+				cols.push(ints.get(i));
+				ints.remove(i);
+			}
+		} else {
+			for(int i = 0; i < ints.size(); i++) {
+				cols.push(ints.get(ints.size()-i-1));
+			}
 		}
 		
 		compiler = new ImageCompiler(img, cam.getPainter(), this);
@@ -103,7 +112,9 @@ public class Renderer implements Runnable{
 			cols[i] = sampler.sample(col, i);
 		}
 		
-		compiler.addCol(col, cols);
+		Chunk chunk = new Chunk(col, cols);
+		
+		compiler.addCol(chunk);
 		doneCol();
 		
 		System.gc();
@@ -113,7 +124,7 @@ public class Renderer implements Runnable{
 		pixel+=view.h_r;
 	}
 	
-	long pixel = 0;
+	long pixel;
 	public boolean percentage() {
 		int num = view.w_r*view.h_r;
 		String percentage = Float.toString((float)pixel/(float)num*100);
